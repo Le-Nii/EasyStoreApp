@@ -1,0 +1,14 @@
+
+{% extends "base_generic.html" %}
+{% block content %}
+
+
+<div class="panel panel-primary col-md-10">
+        <div class="panel-heading"><p>Logged out!</p>  </div>
+        <div class="panel-body lead">
+
+                <a href="{% url 'login'%}">Click here to login again.</a>
+        </div>
+</div>
+{% endblock %}
+

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+    <head>
+	      <meta charset=utf-8 />
+	      <title>Log in</title>
+
+        {% load static %}
+        <script src="{% static 'store/js/jquery-3.2.1.min.js' %}">
+        </script>
+
+        <link rel="stylesheet" href="{% static 'store/css/bootstrap.min.css' %}">
+
+        <script src="{% static 'store/js/bootstrap.bundle.min.js' %}">
+        </script>
+
+        <link rel="icon" type="image/png" sizes="32x32" href="{% static 'store/img/favicon.ico' %}">
+        <link rel="manifest" href="{% static 'store/manifest.json' %}">
+        <link rel="mask-icon" href="{% static 'store/img/safari-pinned-tab.svg" color="#5bbad5' %}">
+        <meta name="msapplication-TileColor" content="#da532c">
+        
+        <meta name="theme-color" content="#ffffff">
+    </head>
+    <body>
+	      <div class="container-fluid">
+	          <div class="row justify-content-center">
+		            <div class="col-md-4">
+		                {% if error %}
+		                <div class="alert alert-danger" role="alert">Your username and password didn't match.
+			                  Please try again.</div>
+		                {% endif %}
+
+		                {% if next %}
+			              {% if user.is_authenticated %}
+			              <div class="alert alert-warning" role="alert">
+				                Your account doesn't have access to this page. To proceed,
+				                please login with an account that has access.
+			              </div>
+			              {% else %}
+				                <div class="alert alert-warning" role="alert">Please login to see this page.</div>
+			              {% endif %}
+			              {% endif %}
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-md-4">
+                    <form method="post" action="">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label for="username">Username</label>
+                            <input class="form-control" id="username" name="username" type="text" placeholder="Username" />
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            <input class="form-control" id="password" name="password" type="password" placeholder="Password" />
+                        </div>
+                        <div class="form-group">
+                            <input class="form-control btn btn-primary" name="submit" type="submit" value="Log in" />
+                        </div>
+                    </form>
+                </div>
+            </div>
+	      </div>
+    </body>
+</html>

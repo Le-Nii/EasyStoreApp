@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+    <head>
+	      <meta charset=utf-8 />
+	      <title>Order id {{ order.id }} from {{ order.last_change }}</title>
+
+        {% load static %}
+        <script src="{% static 'store/js/jquery-3.2.1.min.js' %}">
+        </script>
+
+        <link rel="stylesheet" href="{% static 'store/css/bootstrap.min.css' %}">
+
+        <script src="{% static 'store/js/bootstrap.bundle.min.js' %}">
+        </script>
+
+        <script src="{% static 'store/js/jquery-3.2.1.min.js' %}">
+        </script>
+
+        <link rel="stylesheet" href="{% static 'store/css/bootstrap.min.css' %}">
+
+        <script src="{% static 'store/js/bootstrap.bundle.min.js' %}">
+        </script>
+
+        <link rel="apple-touch-icon" sizes="57x57" href="{% static 'store/img/apple-touch-icon-57x57.png' %}">
+        <link rel="icon" type="image/png" sizes="32x32" href="{% static "store/img/favicon.ico" %}" >
+        <link rel="mask-icon" href="{% static "store/img/safari-pinned-tab.svg" color="#5bbad5" %}">
+        <meta name="msapplication-TileColor" content="#da532c">
+        <meta name="theme-color" content="#ffffff">
+
+        <style type="text/css">
+            @media print {
+                .no-print {
+                    display:none;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <div class="row text-center">
+                <div class="col-12">
+                    <h1>{{ company }}</h1>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <p>
+                        <button type="button" class="btn btn-primary no-print" onclick="window.print();">Print</button>
+                    </p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Name</th>
+                                <th scope="col">Stock</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% if list %}
+                            {% for product in list %}
+                            <tr>
+                                <td>{{ product.name }}</td>
+                                <td>{{ product.stock }}
+                                    <a class="btn btn-solid btn-sm text-warning" href="">Update</a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                            {% endif %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

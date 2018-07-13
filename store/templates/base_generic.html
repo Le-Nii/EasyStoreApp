@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+    <head>
+	      <meta charset=utf-8 />
+	      <title>Order</title>
+
+        {% load static %}
+        <script src="{% static 'store/js/jquery-3.2.1.min.js' %}">
+        </script>
+
+        <link rel="stylesheet" href="{% static 'store/css/bootstrap.min.css' %}">
+
+        <script src="{% static 'store/js/bootstrap.bundle.min.js' %}">
+        </script>
+
+        <link rel="apple-touch-icon" sizes="57x57" href="{% static 'store/img/apple-touch-icon-57x57.png' %}">
+        <link rel="icon" type="image/png" sizes="32x32" href="{% static "store/img/favicon.ico" %}" >
+        <link rel="mask-icon" href="{% static "store/img/safari-pinned-tab.svg" color="#5bbad5" %}">
+        <meta name="msapplication-TileColor" content="#da532c">
+        
+        <meta name="theme-color" content="#ffffff">
+    </head>
+    <body style="margin-bottom : 7%;">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+            <a class="navbar-brand" href="#">EasyStore</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav mr-auto">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="#" onclick="reset();">Clear Order</a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link active dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Payment
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" href="#" onclick="payed('cash');">Cash</a>
+                            </div>
+                        </li>
+                        {% if request.user.is_staff %}
+                        <li class="nav-item">
+                            <a id="resetcashpopover" tabindex="0" class="nav-link active dropdown-toggle" role="button" data-toggle="popover" data-placement="bottom"  title="Reset Cash"
+                               style="cursor:pointer;"
+                               data-content="<div class='row'><div class='col-md-12'><input type='number' value='0' name='resetcashamount' id='resetcashinput' step='0.01'></a></div></div>
+                                   <div class='row' style='margin-top:1em;'><div class='col-md-12'><button type='button' class='btn btn-primary' onclick='resetCash();'>Reset</button></div></div>">
+                                Reset Cash
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{% url 'view_stock' %}" class="nav-link active" title="View Stock" style="cursor:pointer;">View Stock</a>
+                        </li>
+                        {% endif %}
+                        <li class="nav-item">
+                            <a class="nav-link active" href="{% url 'admin:index' %}">Admin</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" >Reports</a>
+                        </li>
+                        <li class="nav-item">
+                                <a class="nav-link active" href="{% url 'logout' %}">Log Out</a>
+                            </li>
+                    </ul>
+                </div>
+        </nav>
+      {% block sidebar %}
+     {% endblock %}
+      {% block content %}{% endblock %}
+      {% block pagination %}
+  {% if is_paginated %}
+      <div class="pagination text-center">
+          <span class="page-links">
+              {% if page_obj.has_previous %}
+                  <a href="{{ request.path }}?page={{ page_obj.previous_page_number }}">previous</a>
+              {% endif %}
+              <span class="page-current">
+                  Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+              </span>
+              {% if page_obj.has_next %}
+                  <a href="{{ request.path }}?page={{ page_obj.next_page_number }}">next</a>
+              {% endif %}
+          </span>
+      </div>
+  {% endif %}
+{% endblock %} 
+      </div>
+    </div>
+
+  </div>
+  <!-- Footer -->
+<footer class="py-3 bg-primary" style="position: fixed;  bottom: 0; width: 100%;">
+    <div class="container">
+        <p class="m-0 text-center text-white">Copyright &copy; EasyStore 2018</p>
+    </div>
+    <!-- /.container -->
+</footer>
+
+</body>
+</html>

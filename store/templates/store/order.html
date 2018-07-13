@@ -1,0 +1,83 @@
+{% extends "base_generic.html" %}
+
+
+{% block content %}
+       
+       
+<div id="cashresetdiv" class="alert alert-success alert-dismissable" style="display:none;" role="alert">
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    Successfully reset the cash amount to {{ currency }}<span id="cashresetamount"></span>.
+</div>
+  <div class="container-fluid">
+      <div class="row">
+          <div class="col-sm-8">
+                <div class="row">
+                      {% if list %}
+                      {% for product in list %}
+                      <div class="col-sm-6 col-md-3" style="padding-top: 5px; padding-bottom: 5px;">
+                    <a role="button" class="btn btn-primary btn-block"
+                                 href="#"
+                                     onclick="addProduct({{ product.id }});">
+                                {{ product.name }}<br>{{ currency }}{{ product.price }}
+                    </a>
+                </div>
+                      {% endfor %}
+                      {% endif %}
+                </div>
+            </div>
+          <div class="col-sm-4">
+            <div id="additiondiv">
+            </div>
+            </div>
+      </div>
+  </div>
+  <script>
+   function addProduct(productID) {
+         $('#additiondiv').load("{% url 'order_add_product' '' %}" + productID);
+         console.log("Ordered number: " + productID);
+   }
+
+   function reset() {
+         $('#additiondiv').load("{% url 'reset_order' %}");
+         console.log("Reset addition");
+   }
+
+   function payed(method) {
+    
+     if (method == "cash") {
+             $('#additiondiv').load("{% url 'payment_cash' %}");
+     } 
+    
+         console.log("Person payed");
+   }
+
+   function removeProduct(product) {
+     console.log("remove " + product);
+         $('#additiondiv').load("{%url 'order_remove_product' '' %}" + encodeURIComponent(product));
+   }
+
+ function resetCash() {
+     var req = new XMLHttpRequest();
+     req.open('GET', "{% url 'cash' '' %}" + encodeURIComponent($("#resetcashinput").val()), false);
+     req.send(null)
+     console.log('trying to reset cash');
+
+     if (req.status == 200) {
+         $('#cashresetamount').text(encodeURIComponent($("#resetcashinput").val()));
+         $('#cashresetdiv').show()
+         $('#resetcashpopover').popover('hide');
+         console.log('succesfully reset cash');
+     }
+ }
+
+   $(document).ready(function() {
+         // This shallst load /addition in its div
+     $('#resetcashpopover').popover({html:true});
+         $('#additiondiv').load("{% url 'addition' %}");
+   });
+  </script>
+
+
+
+{% endblock %}       
+       
