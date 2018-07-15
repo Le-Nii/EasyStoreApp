@@ -22,7 +22,9 @@ class Product(models.Model):
     cost_price = models.DecimalField(max_digits=7,
                                       decimal_places=2,
                                       default=0)
-    price = models.DecimalField(max_digits=7, decimal_places=2)
+    price = models.DecimalField(max_digits=7, 
+                                      decimal_places=2,
+                                      default=0)
     stock_applies = models.BooleanField(default=True)
     stock = models.PositiveSmallIntegerField(default=0)
 
@@ -65,19 +67,46 @@ class Cash(models.Model):
     cost  = models.DecimalField(max_digits=10,
                                       decimal_places=2,
                                       default=0)
+    def __str__(self):
+        return "Cash Modify on: {:%B %d, %Y; %H:%M}".format(self.timestamp)
 
 
 class Order_Item(models.Model):
     product = models.ForeignKey(Product,
                                 on_delete=models.CASCADE)
     order = models.ForeignKey(Order, on_delete=models.CASCADE)
-    cost_price = models.DecimalField(max_digits=7,
-                                         decimal_places=2,
-                                         default=0)
     price = models.DecimalField(max_digits=7, decimal_places=2)
     name = models.CharField(max_length=100)
     timestamp = models.DateTimeField(auto_now=True)
 
+class Purchase(models.Model):
+    product = models.ForeignKey(Product,
+                                on_delete=models.CASCADE)
+    cost_price = models.DecimalField(max_digits=7, decimal_places=2)
+    selling_price = models.DecimalField(max_digits=7, decimal_places=2)
+    stock = models.PositiveSmallIntegerField()
+    timestamp = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ["timestamp"]
+
+    def save(self, *args, **kwargs):
+        if(self.cost_price != 0):
+            self.product.cost_price = self.cost_price
+        if(self.selling_price != 0):
+            self.product.price = self.selling_price
+        self.product.stock = int(self.product.stock) + self.stock
+        self.product.save()
+        return super(Purchase, self).save(*args, **kwargs)
+
+    def get_absolute_url(self):
+        """
+        Returns the url to access a particular product instance.
+        """
+        return reverse('product-detail', args=[str(self.id)])
+
+    def __str__(self):
+        return "Purchase on: {:%B %d, %Y; %H:%M}".format(self.timestamp) 
 
 class Setting(models.Model):
     key = models.CharField(max_length=50)

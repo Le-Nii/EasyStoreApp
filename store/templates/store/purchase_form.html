@@ -1,12 +1,11 @@
 {% extends "base_generic.html" %}
 
 {% block content %}
-<div class="row">
-  <div class="col-md-4"></div>
-        <div class="panel panel-primary col-md-4 ">
-                <div class="panel-heading lead" ><h2>Product</h2></div>
-                <div class="panel-body" >
-                        
+<div class=" row">
+        <div class="col-md-4"></div>
+        <div class="panel panel-primary col-md-4">
+        <div class="panel-heading " ><h2>New Purchase</h2></div>
+        <div class="panel-body" >
                         <div >
                                 <form action="">
                                 {%csrf_token%}
@@ -21,25 +20,25 @@
                                         {{field.errors}}
                                 </div>
                                 <div class="form-group">
-                                        
-                                                {{ field.label_tag }}
+                                        {{ field.label_tag }}
                                                 
-                                                {{ field.errors }}
-                                                {{ field }}
-                                                {{ field.help_text }}
-                                                
-                                        
+                                        {{ field.errors }}
+                                        {{ field }}
+                                
+                                
                                 </div>
                                 {% endfor %}
-                        
+                                
                                 <button class="btn btn-primary" style="width:100%"> Submit</button>
                         </div>
                         </form>
                         <br>
-                        <a  class="btn btn-primary" href="{% url 'view_stock' %}" >View Stock</a>
-                        <a  class="btn btn-primary" href="{% url  'purchase_create' %}" >New Purchase</a>
+                <a  class="btn btn-primary" href="{% url 'purchases' %}" >View Stock</a>
+                <a  class="btn btn-primary" href="{% url 'product_create' %}" >New Product</a>
                 </div>
         </div>
         <div class="col-md-4"></div>
 </div>
+
+
 {% endblock %}

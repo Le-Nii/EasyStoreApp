@@ -1,34 +1,8 @@
-<!DOCTYPE html>
-<html>
-    <head>
-	      <meta charset=utf-8 />
-	      <title>Order id {{ order.id }} from {{ order.last_change }}</title>
+{% extends "base_generic.html" %}
 
-        {% load static %}
-        <script src="{% static 'store/js/jquery-3.2.1.min.js' %}">
-        </script>
 
-        <link rel="stylesheet" href="{% static 'store/css/bootstrap.min.css' %}">
-
-        <script src="{% static 'store/js/bootstrap.bundle.min.js' %}">
-        </script>
-
-        <link rel="apple-touch-icon" sizes="57x57" href="{% static 'store/img/apple-touch-icon-57x57.png' %}">
-        <link rel="icon" type="image/png" sizes="32x32" href="{% static "store/img/favicon.ico" %}" >
-        <link rel="mask-icon" href="{% static "store/img/safari-pinned-tab.svg" color="#5bbad5" %}">
-        <meta name="msapplication-TileColor" content="#da532c">
-        <!-- <meta name="msapplication-TileImage" content="{% static "store/img/mstile-144x144.png" %}"> -->
-        <meta name="theme-color" content="#ffffff">
-
-        <style type="text/css">
-            @media print {
-                .no-print {
-                    display:none;
-                }
-            }
-        </style>
-    </head>
-    <body>
+{% block content %}
+       
         <div class="container">
             <div class="row text-center">
                 <div class="col-12">
@@ -45,6 +19,7 @@
                 <div class="col-12">
                     <p>
                         <button type="button" class="btn btn-primary no-print" onclick="window.print();">Print</button>
+                        
                     </p>
                 </div>
             </div>
@@ -79,5 +54,4 @@
         <script>
          window.onload = window.print;
         </script>
-    </body>
-</html>
+ {% endblock %}

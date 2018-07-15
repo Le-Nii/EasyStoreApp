@@ -19,10 +19,19 @@
         <meta name="msapplication-TileColor" content="#da532c">
         
         <meta name="theme-color" content="#ffffff">
+        <style type="text/css">
+            @media print {
+                .no-print {
+                    display:none;
+                }
+            }
+            td , th{text-align: center; vertical-align: middle;}
+
+        </style>
     </head>
     <body style="margin-bottom : 7%;">
         <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-            <a class="navbar-brand" href="#">EasyStore</a>
+            <a class="navbar-brand" href="{% url 'order' %}">EasyStore</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
                 </button>
@@ -38,6 +47,7 @@
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 <a class="dropdown-item" href="#" onclick="payed('cash');">Cash</a>
+                                <a class="dropdown-item" href="#" onclick="payed('credit');">Credit</a>
                             </div>
                         </li>
                         {% if request.user.is_staff %}
@@ -49,15 +59,31 @@
                                 Reset Cash
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a href="{% url 'view_stock' %}" class="nav-link active" title="View Stock" style="cursor:pointer;">View Stock</a>
-                        </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link active dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Stock
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" href="{% url 'view_stock' %}" >View Stock</a>
+                                    <a class="dropdown-item" href="{% url 'product_create' %}">New Product</a>
+                                </div>
+                            </li>
+                            <li class="nav-item dropdown">
+                                    <a class="nav-link active dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        Purchases
+                                    </a>
+                                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                        <a class="dropdown-item" href="{% url 'purchases' %}" >View Purchases</a>
+                                        <a class="dropdown-item" href="{% url 'purchase_create' %}">New Purchase</a>
+                                    </div>
+                                </li>
+                            <li class="nav-item">
+                                    <a class="nav-link active"  href="">Reports</a>
+                                    
+                            </li>
                         {% endif %}
                         <li class="nav-item">
                             <a class="nav-link active" href="{% url 'admin:index' %}">Admin</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link active" >Reports</a>
                         </li>
                         <li class="nav-item">
                                 <a class="nav-link active" href="{% url 'logout' %}">Log Out</a>
@@ -65,6 +91,7 @@
                     </ul>
                 </div>
         </nav>
+    <div class="container-fluid">
       {% block sidebar %}
      {% endblock %}
       {% block content %}{% endblock %}
@@ -85,8 +112,6 @@
       </div>
   {% endif %}
 {% endblock %} 
-      </div>
-    </div>
 
   </div>
   <!-- Footer -->

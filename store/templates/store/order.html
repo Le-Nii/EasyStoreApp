@@ -43,13 +43,16 @@
    }
 
    function payed(method) {
-    
-     if (method == "cash") {
-             $('#additiondiv').load("{% url 'payment_cash' %}");
-     } 
-    
-         console.log("Person payed");
-   }
+             if (confirm("Do you want to print the addition?")) {
+                 window.open("{% url 'print_current_order' %}", "_blank").focus();
+             }
+             if (method == "cash") {
+		             $('#additiondiv').load("{% url 'payment_cash' %}");
+             } else if (method == "credit") {
+		             $('#additiondiv').load("{% url 'payment_credit' %}");
+             }
+		         console.log("Person payed");
+	       }
 
    function removeProduct(product) {
      console.log("remove " + product);

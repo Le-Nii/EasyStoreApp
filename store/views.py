@@ -9,10 +9,24 @@ from django.contrib.auth.models import User
 from django.contrib.auth import login as auth_login
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect
-from .models import Product, Order, Cash, Order_Item
-from . import helper
+from .models import Product, Order, Cash, Order_Item, Purchase
 from django.views.generic.edit import CreateView, UpdateView
+from django.forms import ModelForm
+from django.views import generic
+from django.urls import reverse
+from . import helper
 
+def index(request):
+    """
+    View function for home page of site.
+    """
+    
+    # Render the HTML template index.html with the data in the context variable
+    return render(
+        request,
+        'index.html',
+        context={},
+    )
 
 def login(request):
     if request.method == "GET":
@@ -226,7 +240,7 @@ def payment_cash(request):
 
 
 @login_required
-def payment_card(request):
+def payment_credit(request):
     succesfully_payed = False
     payment_error = False
     cash, current_order, currency = helper.setup_handling(request)
@@ -275,13 +289,55 @@ def view_stock(request):
 
     return render(request, 'store/stock.html', context=context)
 
+class ProductModelForm(ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(ProductModelForm, self).__init__(*args, **kwargs)
+        for field in iter(self.fields):
+            self.fields[field].widget.attrs.update({
+                'class': 'form-control'
+            })
+    class Meta:
+        model = Product
+        exclude = ('stock_applies',)
+
+    
+class PurchaseModelForm(ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(PurchaseModelForm, self).__init__(*args, **kwargs)
+        for field in iter(self.fields):
+            self.fields[field].widget.attrs.update({
+                'class': 'form-control'
+            })
+    class Meta:
+        model = Purchase
+        fields = '__all__'
 
 class ProductCreate(CreateView):
     model = Product
-    fields = '__all__'
+    fields = ['name']
     
 
 
 class ProductUpdate(UpdateView):
+    form_class = ProductModelForm
     model = Product
-    fields = '__all__'
+    
+    
+
+
+class PurchaseCreate(CreateView):
+    model = Purchase
+    form_class = PurchaseModelForm
+
+
+class PurchaseUpdate(CreateView):
+    model = Purchase
+    form_class = PurchaseModelForm
+
+class PurchaseListView(generic.ListView):
+    model = Purchase
+    paginate_by = 10
+
+
+class PurchaseDetailView(generic.DetailView):
+    model = Purchase
