@@ -3,15 +3,12 @@
     <head>
 	      <meta charset=utf-8 />
 	      <title>Order</title>
-
+          
         {% load static %}
-        <script src="{% static 'store/js/jquery-3.2.1.min.js' %}">
-        </script>
+        <script src="{% static 'store/js/jquery-3.2.1.min.js' %}"></script>
 
         <link rel="stylesheet" href="{% static 'store/css/bootstrap.min.css' %}">
-
-        <script src="{% static 'store/js/bootstrap.bundle.min.js' %}">
-        </script>
+        <script src="{% static 'store/js/bootstrap.bundle.min.js' %}"></script>
 
         <link rel="apple-touch-icon" sizes="57x57" href="{% static 'store/img/apple-touch-icon-57x57.png' %}">
         <link rel="icon" type="image/png" sizes="32x32" href="{% static "store/img/favicon.ico" %}" >
@@ -78,7 +75,7 @@
                                     </div>
                                 </li>
                             <li class="nav-item">
-                                    <a class="nav-link active"  href="">Reports</a>
+                                    <a class="nav-link active"  href="{% url 'report' %}">Reports</a>
                                     
                             </li>
                         {% endif %}

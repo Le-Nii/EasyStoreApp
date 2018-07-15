@@ -14,6 +14,7 @@ from django.views.generic.edit import CreateView, UpdateView
 from django.forms import ModelForm
 from django.views import generic
 from django.urls import reverse
+from django.urls import reverse_lazy
 from . import helper
 
 def index(request):
@@ -315,12 +316,14 @@ class PurchaseModelForm(ModelForm):
 class ProductCreate(CreateView):
     model = Product
     fields = ['name']
+    success_url = reverse_lazy('purchase_create')
     
 
 
 class ProductUpdate(UpdateView):
     form_class = ProductModelForm
     model = Product
+    success_url = reverse_lazy('view_stock')
     
     
 
@@ -328,6 +331,7 @@ class ProductUpdate(UpdateView):
 class PurchaseCreate(CreateView):
     model = Purchase
     form_class = PurchaseModelForm
+    success_url = reverse_lazy('purchase_create')
 
 
 class PurchaseUpdate(CreateView):
@@ -341,3 +345,22 @@ class PurchaseListView(generic.ListView):
 
 class PurchaseDetailView(generic.DetailView):
     model = Purchase
+
+
+@login_required
+def report(request):
+    cash, current_order, currency = helper.setup_handling(request)
+
+    total_price = current_order.total_price
+    list = Order_Item.objects.filter(order=current_order)
+    context = {
+        'list': list,
+        'total_price': total_price,
+        'cash': cash,
+        'succesfully_payed': False,
+        'payment_error': False,
+        'amount_added': 0,
+        'currency': currency,
+        'stock_error': True,
+    }
+    return render(request, 'store/report.html', context=context, status=400)

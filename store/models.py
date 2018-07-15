@@ -28,6 +28,9 @@ class Product(models.Model):
     stock_applies = models.BooleanField(default=True)
     stock = models.PositiveSmallIntegerField(default=0)
 
+    class Meta:
+        ordering = ["-stock"]
+
     def __str__(self):
         return self.name
     

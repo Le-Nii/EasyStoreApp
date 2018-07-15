@@ -18,7 +18,10 @@
                     <a role="button" class="btn btn-primary btn-block"
                                  href="#"
                                      onclick="addProduct({{ product.id }});">
-                                {{ product.name }}<br>{{ currency }}{{ product.price }}
+                                      {{ product.name }}<br>{{ currency }}{{ product.price }} 
+                                      <span class="badge badge-pill pull-right 
+                                      {% if product.stock == 0 %} badge-danger {% elif product.stock < 10 %}badge-warning {% else %}badge-success{% endif %}">
+                                    <em> *</em>{{ product.stock }}</span>
                     </a>
                 </div>
                       {% endfor %}

@@ -20,6 +20,7 @@ urlpatterns = [
     path('purchase/<int:pk>/update/', views.PurchaseUpdate.as_view(), name='purchase_update'),
     path('product/create/', views.ProductCreate.as_view(), name='product_create'),
     path('product/<int:pk>/update/', views.ProductUpdate.as_view(), name='product_update'),
+    path('report/', views.report, name='report'),
 ]
 
 urlpatterns += [

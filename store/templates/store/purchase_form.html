@@ -7,7 +7,7 @@
         <div class="panel-heading " ><h2>New Purchase</h2></div>
         <div class="panel-body" >
                         <div >
-                                <form action="">
+                                <form action="" method="POST">
                                 {%csrf_token%}
                                 {% for error in form.non_field_errors %}
                                 <div class="form-group has-errors text-danger small">
@@ -33,7 +33,7 @@
                         </div>
                         </form>
                         <br>
-                <a  class="btn btn-primary" href="{% url 'purchases' %}" >View Stock</a>
+                <a  class="btn btn-primary" href="{% url 'purchases' %}" >View Purchase List</a>
                 <a  class="btn btn-primary" href="{% url 'product_create' %}" >New Product</a>
                 </div>
         </div>
