@@ -62,6 +62,9 @@ class Order(models.Model):
     def get_absolute_url(self):
         return reverse('view_order', args=[self.id])
 
+    def __str__(self):
+        return "Transact on: {:%B %d, %Y; %H:%M}".format(self.last_change)
+
 
 class Cash(models.Model):
     amount = models.DecimalField(max_digits=10,
@@ -70,8 +73,6 @@ class Cash(models.Model):
     cost  = models.DecimalField(max_digits=10,
                                       decimal_places=2,
                                       default=0)
-    def __str__(self):
-        return "Cash Modify on: {:%B %d, %Y; %H:%M}".format(self.timestamp)
 
 
 class Order_Item(models.Model):

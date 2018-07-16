@@ -351,16 +351,19 @@ class PurchaseDetailView(generic.DetailView):
 def report(request):
     cash, current_order, currency = helper.setup_handling(request)
 
-    total_price = current_order.total_price
-    list = Order_Item.objects.filter(order=current_order)
-    context = {
-        'list': list,
-        'total_price': total_price,
-        'cash': cash,
-        'succesfully_payed': False,
-        'payment_error': False,
-        'amount_added': 0,
-        'currency': currency,
-        'stock_error': True,
-    }
-    return render(request, 'store/report.html', context=context, status=400)
+    # Generate counts of some of the main objects
+    num_orders=Order.objects.all().count()
+    num_product=Product.objects.all().count()
+    num_purchases=Product.objects.all().count()
+    num_product_finished =Product.objects.filter(stock__exact=0).count()
+    cash_register = Cash.objects.values_list('amount', flat=True).first()
+    
+    num_orders = int(num_orders) - 1
+    
+    # Render the HTML template index.html with the data in the context variable.
+    return render(
+        request,
+        'store/report.html',
+        context={'num_orders':num_orders,'num_product':num_product,'num_purchases':num_purchases,
+        'num_product_finished':num_product_finished,'cash_register':cash_register,},
+    ) # num_visits appended

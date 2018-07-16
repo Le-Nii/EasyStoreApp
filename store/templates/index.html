@@ -1,14 +1,53 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-
-</head>
-<body id="myPage" data-spy="scroll" data-target=".navbar" data-offset="60">
-
-<div><h1><a href="{% url 'order' %}">EasyStore</h1></a></div>
+{% extends "base_generic.html" %}
 
 
+{% block content %}
+            
+     <header class="w3-container w3-blue w3-center" style="padding:128px 16px">   
+        <h1 class="w3-margin w3-jumbo">EASYSTOCKAPP</h1>
+        <a href="{% url 'order' %}" class="w3-button w3-black w3-padding-large w3-large w3-margin-top btn">Get Started</a>
+      </header>
+      
+      <!-- First Grid -->
+      <div class="w3-row-padding w3-padding-64 w3-container">
+        <div class="w3-content">
+          <div class="w3-twothird">
+            <h1>WELCOME TO EASYSTOCKAPP</h1>
+            <h5 class="w3-padding-32">EasyStockApp is an app in progress, been built using Django. This project aims at aiding small scale businesses to manage their data efficiently</h5>
+      
+            <p class="w3-text-grey"></p>
+          </div>
+      
+          <div class="w3-third w3-center">
+            <i class="fa fa-anchor w3-padding-64 w3-text-blue"></i>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Second Grid -->
+      <div class="w3-row-padding w3-light-grey w3-padding-64 w3-container">
+        <div class="w3-content">
+          <div class="w3-third w3-center">
+            <i class="fa fa-coffee w3-padding-64 w3-text-blue w3-margin-right"></i>
+          </div>
+      
+          <div class="w3-twothird">
+            <h1>WHAT EASYSTOCKAPP DOES</h1>
+            <h5 class="w3-padding-32">Some basic Functions include:</h5>
+      
+            <p><li><ul> View Stock products. </ul>
+              <ul>Input/check your daily sales. </ul>
+              <ul>Input/check your daily purchases. </ul>
+               <ul> Check profit made on daily, weekly, monthly and yearly base </ul>
+            </p>
+          </div>
+        </div>
+      </div>
+      
+      <div class="w3-container w3-black w3-center w3-opacity w3-padding-64">
+          <h1 class="w3-margin w3-xlarge">Quote of the day: “If you count all your assets you always show a profit.”
+      
+      Wilson Mizner</h1>
+      </div>
 
-
-</body>
-</html>
+{% endblock %}

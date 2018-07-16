@@ -1,96 +1,92 @@
 <!DOCTYPE html>
 <html>
-    <head>
-	      <meta charset=utf-8 />
-	      <title>Order</title>
-          
+<title>EASYSTOCKAPP</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
         {% load static %}
-        <script src="{% static 'store/js/jquery-3.2.1.min.js' %}"></script>
-
+        
         <link rel="stylesheet" href="{% static 'store/css/bootstrap.min.css' %}">
+        <link rel="stylesheet" href="{% static 'store/css/bootstrap-theme.min.css' %}">
+        <script src="{% static 'store/js/jquery-3.2.1.min.js' %}"></script>
         <script src="{% static 'store/js/bootstrap.bundle.min.js' %}"></script>
-
         <link rel="apple-touch-icon" sizes="57x57" href="{% static 'store/img/apple-touch-icon-57x57.png' %}">
         <link rel="icon" type="image/png" sizes="32x32" href="{% static "store/img/favicon.ico" %}" >
         <link rel="mask-icon" href="{% static "store/img/safari-pinned-tab.svg" color="#5bbad5" %}">
         <meta name="msapplication-TileColor" content="#da532c">
         
         <meta name="theme-color" content="#ffffff">
-        <style type="text/css">
-            @media print {
+      
+<style>
+body,h1,h2,h3,h4,h5,h6 {font-family: "Lato", sans-serif}
+.w3-bar,h1,button {font-family: "Montserrat", sans-serif}
+.fa-anchor,.fa-coffee {font-size:200px}
+
+@media print {
                 .no-print {
                     display:none;
                 }
             }
             td , th{text-align: center; vertical-align: middle;}
+</style>
+<body>
 
-        </style>
-    </head>
-    <body style="margin-bottom : 7%;">
-        <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-            <a class="navbar-brand" href="{% url 'order' %}">EasyStore</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-                </button>
+<!-- Navbar -->
+<div class="w3-top">
+  <div class="w3-bar w3-blue w3-card w3-left-align w3-large">
+    <a class="w3-bar-item w3-button w3-hide-medium w3-hide-large w3-right w3-padding-large w3-hover-white w3-large w3-red" href="javascript:void(0);" onclick="myFunction()" title="Toggle Navigation Menu"><i class="fa fa-bars"></i></a>
+    <a href="{% url 'index' %}" class="w3-bar-item w3-button w3-padding-large w3-hover-white">Home</a>
+    <a href="{% url 'order' %}" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white">Sales</a>
+    <a href="#" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" onclick="reset();">Clear Order</a>
+    <a id="resetcashpopover" tabindex="0" class="nav-link active dropdown-toggle w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" role="button" data-toggle="popover" data-placement="bottom"  title="Reset Cash"
+            style="cursor:pointer;"
+            data-content="<div class='row'><div class='col-md-12'><input type='number' value='0' name='resetcashamount' id='resetcashinput' step='0.01'></a></div></div>
+                <div class='row' style='margin-top:1em;'><div class='col-md-12'><button type='button' class='btn btn-primary' onclick='resetCash();'>Reset</button></div></div>">
+             Reset Cash
+         </a>
+            <div class="w3-dropdown-hover">
+             <button class="w3-buttonw3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white">Payment</button>
+            <div class="w3-dropdown-content w3-card-4">
+              <a href="#" class="w3-bar-item w3-button" onclick="payed('cash');">Cash</a>
+              <a href="#" class="w3-bar-item w3-button" onclick="payed('credit');">Credit</a>
+            </div>
+            </div>
+            
+           <div class="w3-dropdown-hover">
+            <button class="w3-buttonw3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white">Purchases</button>
+            <div class="w3-dropdown-content w3-bar-block w3-border">
+              <a class="w3-bar-item w3-button" href="{% url 'purchases' %}" >View Purchases</a>
+              <a class="w3-bar-item w3-button" href="{% url 'purchase_create' %}">Purchase product</a>
+              <a href="#" class="w3-bar-item w3-button">Other purchases</a>
+            </div>
+          </div>
+    <a href="{% url 'report' %}" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white">Reports</a>
+    <a href="{% url 'admin:index' %}" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white">Admin</a>
+    <a href="{% url 'logout' %}" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white pull-right">Log out</a>
+  </div>
 
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav mr-auto">
-                        <li class="nav-item">
-                            <a class="nav-link active" href="#" onclick="reset();">Clear Order</a>
-                        </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link active dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Payment
-                            </a>
-                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" href="#" onclick="payed('cash');">Cash</a>
-                                <a class="dropdown-item" href="#" onclick="payed('credit');">Credit</a>
-                            </div>
-                        </li>
-                        {% if request.user.is_staff %}
-                        <li class="nav-item">
-                            <a id="resetcashpopover" tabindex="0" class="nav-link active dropdown-toggle" role="button" data-toggle="popover" data-placement="bottom"  title="Reset Cash"
-                               style="cursor:pointer;"
-                               data-content="<div class='row'><div class='col-md-12'><input type='number' value='0' name='resetcashamount' id='resetcashinput' step='0.01'></a></div></div>
-                                   <div class='row' style='margin-top:1em;'><div class='col-md-12'><button type='button' class='btn btn-primary' onclick='resetCash();'>Reset</button></div></div>">
-                                Reset Cash
-                            </a>
-                        </li>
-                            <li class="nav-item dropdown">
-                                <a class="nav-link active dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    Stock
-                                </a>
-                                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="{% url 'view_stock' %}" >View Stock</a>
-                                    <a class="dropdown-item" href="{% url 'product_create' %}">New Product</a>
-                                </div>
-                            </li>
-                            <li class="nav-item dropdown">
-                                    <a class="nav-link active dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        Purchases
-                                    </a>
-                                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                        <a class="dropdown-item" href="{% url 'purchases' %}" >View Purchases</a>
-                                        <a class="dropdown-item" href="{% url 'purchase_create' %}">New Purchase</a>
-                                    </div>
-                                </li>
-                            <li class="nav-item">
-                                    <a class="nav-link active"  href="{% url 'report' %}">Reports</a>
-                                    
-                            </li>
-                        {% endif %}
-                        <li class="nav-item">
-                            <a class="nav-link active" href="{% url 'admin:index' %}">Admin</a>
-                        </li>
-                        <li class="nav-item">
-                                <a class="nav-link active" href="{% url 'logout' %}">Log Out</a>
-                            </li>
-                    </ul>
-                </div>
-        </nav>
-    <div class="container-fluid">
+  <!-- Navbar on small screens -->
+  <div id="navDemo" class="w3-bar-block w3-white w3-hide w3-hide-large w3-hide-medium w3-large">
+    <a href="#" class="w3-bar-item w3-button w3-padding-large">Sales</a>
+    <a href="#" class="w3-bar-item w3-button w3-padding-large" onclick="reset();">Clear Order</a>
+    <a href="#" class="w3-bar-item w3-button w3-padding-large">Payment</a>
+    <a href="#" class="w3-bar-item w3-button w3-padding-large">Purchases</a>
+    <a href="#" class="w3-bar-item w3-button w3-padding-large">Reports</a>
+    <a href="#" class="w3-bar-item w3-button w3-padding-large">Admin</a>
+    <a href="#" class="w3-bar-item w3-button w3-padding-large">Logout</a>
+  </div>
+</div>
+
+    
+
       {% block sidebar %}
      {% endblock %}
+     
       {% block content %}{% endblock %}
       {% block pagination %}
   {% if is_paginated %}
@@ -110,14 +106,24 @@
   {% endif %}
 {% endblock %} 
 
-  </div>
-  <!-- Footer -->
-<footer class="py-3 bg-primary" style="position: fixed;  bottom: 0; width: 100%;">
-    <div class="container">
-        <p class="m-0 text-center text-white">Copyright &copy; EasyStore 2018</p>
-    </div>
-    <!-- /.container -->
-</footer>
+  <footer class="py-3 bg-primary" style="position: fixed; bottom: 0; width: 100%;">
+        <div class="container">
+            <p class="m-0 text-center text-white">Copyright &copy; EASYSTOCKAPP 2018</p>
+        </div>
+        <!-- /.container -->
+    </footer>
+    
+<script>
+// Used to toggle the menu on small screens when clicking on the menu button
+function myFunction() {
+    var x = document.getElementById("navDemo");
+    if (x.className.indexOf("w3-show") == -1) {
+        x.className += " w3-show";
+    } else {
+        x.className = x.className.replace(" w3-show", "");
+    }
+}
+</script>
 
 </body>
 </html>
