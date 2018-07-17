@@ -9,12 +9,13 @@ from django.contrib.auth.models import User
 from django.contrib.auth import login as auth_login
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect
-from .models import Product, Order, Cash, Order_Item, Purchase
+from .models import Product, Order, Cash, Order_Item, Purchase, OtherPurchase
 from django.views.generic.edit import CreateView, UpdateView
 from django.forms import ModelForm
 from django.views import generic
 from django.urls import reverse
 from django.urls import reverse_lazy
+import datetime
 from . import helper
 
 def index(request):
@@ -313,6 +314,17 @@ class PurchaseModelForm(ModelForm):
         model = Purchase
         fields = '__all__'
 
+class OtherPurchaseModelForm(ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(OtherPurchaseModelForm, self).__init__(*args, **kwargs)
+        for field in iter(self.fields):
+            self.fields[field].widget.attrs.update({
+                'class': 'form-control'
+            })
+    class Meta:
+        model = OtherPurchase
+        fields = '__all__'
+
 class ProductCreate(CreateView):
     model = Product
     fields = ['name']
@@ -342,9 +354,24 @@ class PurchaseListView(generic.ListView):
     model = Purchase
     paginate_by = 10
 
-
 class PurchaseDetailView(generic.DetailView):
     model = Purchase
+
+class OtherPurchaseCreate(CreateView):
+    model = OtherPurchase
+    form_class = OtherPurchaseModelForm
+    success_url = reverse_lazy('otherpurchase_create')
+
+
+class OtherPurchaseUpdate(CreateView):
+    model = OtherPurchase
+    form_class = OtherPurchaseModelForm
+    success_url = reverse_lazy('otherpurchases')
+
+class OtherPurchaseListView(generic.ListView):
+    model = OtherPurchase
+    paginate_by = 10
+
 
 
 @login_required
@@ -352,18 +379,74 @@ def report(request):
     cash, current_order, currency = helper.setup_handling(request)
 
     # Generate counts of some of the main objects
-    num_orders=Order.objects.all().count()
-    num_product=Product.objects.all().count()
-    num_purchases=Product.objects.all().count()
-    num_product_finished =Product.objects.filter(stock__exact=0).count()
+    num_orders = Order.objects.all().count()
+    orders_sales = Order.objects.values_list('total_price', flat=True).all()
+    num_product = Product.objects.all().count()
+    num_purchases= Purchase.objects.all().count()
+    purchase_cost= Purchase.objects.values_list('cost_price', flat=True).all()
+    num_other_purchases = OtherPurchase.objects.all().count()
+    other_purchases_cost = OtherPurchase.objects.values_list('cost_price', flat=True).all()
+    num_product_finished = Product.objects.filter(stock__exact=0).count()
     cash_register = Cash.objects.values_list('amount', flat=True).first()
-    
+
+
+    # Generate Report
+    total_num_purchases = int(num_purchases) + int(num_other_purchases)
     num_orders = int(num_orders) - 1
+
+    t_sales =0.00
+    t_purchases =0.00
+    t_other_purchases =0.00
+    for i in orders_sales:
+        t_sales = t_sales + float(i)
+
+    for i in other_purchases_cost:
+        t_purchases = t_purchases + float(i)
+
+    for i in other_purchases_cost :
+        t_other_purchases = t_other_purchases + float(i)
+
+    total_purchases_amount = t_other_purchases + t_purchases
+        
+    total_returns = t_sales - total_purchases_amount
+
+    # Daily Report
+    # today_min = datetime.datetime.combine(datetime.date.today(), datetime.time.min)
+    # today_max = datetime.datetime.combine(datetime.date.today(), datetime.time.max)
+    # daily_other_purchases_cost = OtherPurchase.objects.values_list('cost_price', flat=True).filter(timestamp__range=(today_min, today_max)) 
+    # daily_purchase_cost= Purchase.objects.values_list('cost_price', flat=True).filter(timestamp__range=(today_min, today_max)) 
+    # daily_orders_sales = Order.objects.values_list('total_price', flat=True).filter(timestamp__range=(today_min, today_max)) 
+
+    # dt_sales =0.00
+    # dt_purchases =0.00
+    # dt_other_purchases =0.00
+    # for i in daily_orders_sales:
+    #     dt_sales = dt_sales + float(i)
+
+    # for i in daily_other_purchases_cost:
+    #     dt_purchases = dt_purchases + float(i)
+
+    # for i in daily_other_purchases_cost :
+    #     dt_other_purchases = dt_other_purchases + float(i)
+
+    # dtotal_purchases_amount = dt_other_purchases + dt_purchases
+        
+    # daily_total_returns = dt_sales - dtotal_purchases_amount
+
+
+    #Weakly Report
+
+
+    #Monthly Report
+
     
     # Render the HTML template index.html with the data in the context variable.
     return render(
         request,
         'store/report.html',
         context={'num_orders':num_orders,'num_product':num_product,'num_purchases':num_purchases,
-        'num_product_finished':num_product_finished,'cash_register':cash_register,},
+        'num_product_finished':num_product_finished,'cash_register':cash_register, 'total_returns':total_returns,
+        'currency':currency, 't_sales':t_sales, 't_purchases':t_purchases, 't_other_purchases':t_other_purchases,
+        'total_purchases_amount':total_purchases_amount, 'total_purchases_amount':total_purchases_amount,
+        'num_other_purchases':num_other_purchases,'total_num_purchases':total_num_purchases,'t_sales':t_sales,},
     ) # num_visits appended

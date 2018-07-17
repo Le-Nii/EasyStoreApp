@@ -22,7 +22,7 @@
                                       {{ product.name }}<br>{{ currency }}{{ product.price }} 
                                       <span class="badge badge-pill pull-right 
                                       {% if product.stock == 0 %} badge-danger {% elif product.stock < 10 %}badge-warning {% else %}badge-success{% endif %}">
-                                    <em> *</em>{{ product.stock }}</span>
+                                    <em> * </em>{{ product.stock }}</span>
                     </a>
                 </div>
                       {% endfor %}

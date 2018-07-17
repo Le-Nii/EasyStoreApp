@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-<title>EASYSTOCKAPP</title>
+<title>EasyStore</title>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
@@ -43,7 +43,7 @@ body,h1,h2,h3,h4,h5,h6 {font-family: "Lato", sans-serif}
     <a href="{% url 'index' %}" class="w3-bar-item w3-button w3-padding-large w3-hover-white">Home</a>
     <a href="{% url 'order' %}" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white">Sales</a>
     <a href="#" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" onclick="reset();">Clear Order</a>
-    <a id="resetcashpopover" tabindex="0" class="nav-link active dropdown-toggle w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" role="button" data-toggle="popover" data-placement="bottom"  title="Reset Cash"
+    <a id="resetcashpopover" tabindex="0" class="active dropdown-toggle w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" role="button" data-toggle="popover" data-placement="bottom"  title="Reset Cash"
             style="cursor:pointer;"
             data-content="<div class='row'><div class='col-md-12'><input type='number' value='0' name='resetcashamount' id='resetcashinput' step='0.01'></a></div></div>
                 <div class='row' style='margin-top:1em;'><div class='col-md-12'><button type='button' class='btn btn-primary' onclick='resetCash();'>Reset</button></div></div>">
@@ -62,7 +62,7 @@ body,h1,h2,h3,h4,h5,h6 {font-family: "Lato", sans-serif}
             <div class="w3-dropdown-content w3-bar-block w3-border">
               <a class="w3-bar-item w3-button" href="{% url 'purchases' %}" >View Purchases</a>
               <a class="w3-bar-item w3-button" href="{% url 'purchase_create' %}">Purchase product</a>
-              <a href="#" class="w3-bar-item w3-button">Other purchases</a>
+              <a href="{% url 'otherpurchase_create' %}" class="w3-bar-item w3-button">Other purchases</a>
             </div>
           </div>
     <a href="{% url 'report' %}" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white">Reports</a>
@@ -72,13 +72,20 @@ body,h1,h2,h3,h4,h5,h6 {font-family: "Lato", sans-serif}
 
   <!-- Navbar on small screens -->
   <div id="navDemo" class="w3-bar-block w3-white w3-hide w3-hide-large w3-hide-medium w3-large">
-    <a href="#" class="w3-bar-item w3-button w3-padding-large">Sales</a>
+    <a href="{% url 'order' %}"  class="w3-bar-item w3-button w3-padding-large">Sales</a>
+    <a href="{% url 'index' %}"  class="w3-bar-item w3-button w3-padding-large">Sales</a>
     <a href="#" class="w3-bar-item w3-button w3-padding-large" onclick="reset();">Clear Order</a>
-    <a href="#" class="w3-bar-item w3-button w3-padding-large">Payment</a>
-    <a href="#" class="w3-bar-item w3-button w3-padding-large">Purchases</a>
-    <a href="#" class="w3-bar-item w3-button w3-padding-large">Reports</a>
-    <a href="#" class="w3-bar-item w3-button w3-padding-large">Admin</a>
-    <a href="#" class="w3-bar-item w3-button w3-padding-large">Logout</a>
+    <div class="w3-dropdown-hover">
+        <button class="w3-buttonw3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white">Payment</button>
+       <div class="w3-dropdown-content w3-card-4">
+         <a href="#" class="w3-bar-item w3-button" onclick="payed('cash');">Cash</a>
+         <a href="#" class="w3-bar-item w3-button" onclick="payed('credit');">Credit</a>
+       </div>
+       </div>
+    <a href="{% url 'purchase_create' %}"  class="w3-bar-item w3-button w3-padding-large">Purchases</a>
+    <a href="{% url 'report' %}"  class="w3-bar-item w3-button w3-padding-large">Reports</a>
+    <a href="{% url 'admin:index' %}"  class="w3-bar-item w3-button w3-padding-large">Admin</a>
+    <a href="{% url 'logout' %}"  class="w3-bar-item w3-button w3-padding-large">Logout</a>
   </div>
 </div>
 
@@ -108,7 +115,7 @@ body,h1,h2,h3,h4,h5,h6 {font-family: "Lato", sans-serif}
 
   <footer class="py-3 bg-primary" style="position: fixed; bottom: 0; width: 100%;">
         <div class="container">
-            <p class="m-0 text-center text-white">Copyright &copy; EASYSTOCKAPP 2018</p>
+            <p class="m-0 text-center text-white">Copyright &copy; EasyStore 2018</p>
         </div>
         <!-- /.container -->
     </footer>

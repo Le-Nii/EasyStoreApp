@@ -112,6 +112,24 @@ class Purchase(models.Model):
     def __str__(self):
         return "Purchase on: {:%B %d, %Y; %H:%M}".format(self.timestamp) 
 
+class OtherPurchase(models.Model):
+    item_name = models.CharField(max_length=100)
+    cost_price = models.DecimalField(max_digits=7, decimal_places=2)
+    receipt = models.CharField(max_length=100, null=True, blank=True)
+    timestamp = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ["timestamp"]
+
+    def get_absolute_url(self):
+        """
+        Returns the url to access a particular product instance.
+        """
+        return reverse('product-detail', args=[str(self.id)])
+
+    def __str__(self):
+        return "Purchase on: {:%B %d, %Y; %H:%M}".format(self.timestamp) 
+
 class Setting(models.Model):
     key = models.CharField(max_length=50)
     value = models.CharField(max_length=100)
