@@ -1,0 +1,40 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+<div style="margin-top: 3%;"></div>
+   <div class="panel panel-primary">
+      <div class="panel-heading text-center"><h1>Purchase List</h1></div>
+      <div class="panel-body">
+            <p>
+              <button type="button" class="btn btn-primary no-print pull-right" onclick="window.print();">Print</button>
+              <a href="{% url 'purchases' %}" class="btn btn-primary no-print ">Other Purchase List</a>
+            </p>
+            <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Purchase</th>
+                            <th scope="col">Item</th>
+                            <th class="no-print" scope="col">Cost Price</th>
+                            <th class="no-print" scope="col">Selling Price</th>
+                            <th class="no-print" scope="col">Action</th>
+                        </tr>
+                    </thead> 
+                    <tbody>
+                        {% if otherpurchase_list %}
+                        {% for purchase in otherpurchase_list %}
+                        <tr>
+                            <td>{{ purchase }}</td>
+                            <td>{{ purchase.item_name }}</td>
+                            <td>{{ purchase.cost_price }}</td>
+                            <td>{{ purchase.receipt }}</td>
+                            <td><a class="btn btn-solid btn-sm text-warning no-print" href="{% url 'otherpurchase_update' purchase.id %}">Update</a></td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>_
+          {% else %}
+            <p class=" text-center lead">No purchases made yet.</p>
+          {% endif %}  
+      </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,47 @@
+{% extends "base_generic.html" %}
+
+
+{% block content %}
+<div style="margin-top: 3%;"></div>
+        <div class="container">
+            <div class="row text-center">
+                <div class="col-12">
+                    <h1>{{ company }}</h1>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <p>
+                        <button type="button" class="btn btn-primary no-print" onclick="window.print();">Print</button>
+                    </p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Name</th>
+                                <th scope="col">Stock</th>
+                                <th class="no-print" scope="col">Action</th>
+                            </tr>
+                        </thead> 
+                        <tbody>
+                            {% if list %}
+                            {% for product in list %}
+                            <tr>
+                                <td>{{ product.name }}</td>
+                                <td>{{ product.stock }}
+                                </td>  
+                                <td> 
+                                     <a class="btn btn-solid btn-sm text-warning no-print" href="{% url 'product_update' product.id %}">Update</a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                            {% endif %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+{% endblock %}

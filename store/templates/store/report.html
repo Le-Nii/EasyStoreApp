@@ -1,0 +1,268 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+<div style="margin-top: 3%;"></div>
+<div class=" row">
+        <div class="col-md-2"></div>
+        <div class="panel panel-primary col-md-9">
+        <div class="panel-heading text-center" ><h3>Report</h3></div>
+        <div class="panel-body" >
+                            <div class="row">
+                                <div>
+                                        <div class="col-lg-6 card  mb-4 col-md-3" >
+                                                <div class="panel panel-warning">
+                                                    <div class="panel-heading">
+                                                        <div class="row">
+                                                            <div class="col-xs-3">
+                                                                <i class="fa fa-tasks "></i>
+                                                            </div>
+                                                            <div class="col-xs-9 text-center">
+                                                                <div>Number of Products </div>
+                                                                <h1>{{ num_product }}</h1>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <a href="#">
+                                                        <div class="panel-footer">
+                                                            <span class="pull-left">View Details</span>
+                                                            <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                                            <div class="clearfix"></div>
+                                                        </div>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6 card  mb-4 col-md-3" >
+                                                <div class="panel panel-danger">
+                                                    <div class="panel-heading">
+                                                        <div class="row">
+                                                            <div class="col-xs-3">
+                                                                <i class="fa fa-tasks "></i>
+                                                            </div>
+                                                            <div class="col-xs-9 text-center">
+                                                                <div>Products out of Stock</div>
+                                                                <h1>{{ num_product_finished }}</h1>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <a href="#">
+                                                        <div class="panel-footer">
+                                                            <span class="pull-left">View Details</span>
+                                                            <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                                            <div class="clearfix"></div>
+                                                        </div>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                </div>
+                                <div class="col-md-12">
+                                        <button class=" lead btn btn-lg btn-primary btn-block" data-toggle="collapse" data-target="#general">General Report</button>
+                                        <br>
+                                        <div id="general" class="collapse">
+                                                
+                                            <div class="col-lg-4 card  mb-4 col-md-3" >
+                                                <div class="panel panel-primary">
+                                                    <div class="panel-heading">
+                                                        <div class="row">
+                                                            <div class="col-xs-3">
+                                                                <i class=" fa fa-shopping-cart   "></i>
+                                                            </div>
+                                                            <div class="col-xs-9 text-center">
+                                                                <div>Complete orders</div>
+                                                                <h3 class="">{{ num_orders }}</h3>
+                                                                <div>Total Sales</div>
+                                                                <h3 class="">{{ currency }}{{ t_sales }}</h3>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <a href="#">
+                                                        <div class="panel-footer">
+                                                            <span class="pull-left">View Details</span>
+                                                            <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                                            <div class="clearfix"></div>
+                                                        </div>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                            
+                                                <div class="col-lg-4 card  mb-4 col-md-3" >
+                                                        <div class="panel panel-info">
+                                                            <div class="panel-heading">
+                                                                <div class="row">
+                                                                    <div class="col-xs-3">
+                                                                        <i class="fa fa-tasks "></i>
+                                                                    </div>
+                                                                    <div class="col-xs-9 text-center">
+                                                                        <div>Total Purchases</div>
+                                                                        <h1 class="">{{ total_num_purchases }}</h1>
+                                                                        <i class="small" >Product: {{ num_purchases }} Cost:{{ currency }}{{t_purchases}}
+                                                                          <br>  Others: {{ num_other_purchases }}  Cost:{{ currency }}{{t_other_purchases}}</i>
+                                                                        <div>Total Cost</div>
+                                                                        <h3 class="">{{ currency }}{{ total_purchases_amount }}</h3>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <a href="#">
+                                                                <div class="panel-footer">
+                                                                    <span class="pull-left">View Details</span>
+                                                                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                                                    <div class="clearfix"></div>
+                                                                </div>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                    
+                                            <div class="col-lg-4 card  mb-4 col-md-3" >
+                                                <div class="panel panel-success">
+                                                    <div class="panel-heading">
+                                                        <div class="row">
+                                                            <div class="col-xs-3">
+                                                                <i class="fa fa-money"></i>
+                                                            </div>
+                                                            <div class="col-xs-9 text-center">
+                                                                
+                                                                <div>Cash in Register</div>
+                                                                <h3>{{ currency }}{{ cash_register }}</h3>
+                                                                <div>Total Returns</div>
+                                                                <h3 class="">{{ currency }}{{ total_returns }}</h3>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <a href="#">
+                                                        <div class="panel-footer">
+                                                            <span class="pull-left">View Details</span>
+                                                            <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                                            <div class="clearfix"></div>
+                                                        </div>
+                                                    </a>
+                                                </div>
+                                            </div>
+
+                                        </div>  
+
+                                            
+
+                                        <button class="btn btn-lg btn-primary btn-block" data-toggle="collapse" data-target="#daily">Daily Report</button>
+                                        <br>
+                                        <div id="daily" class="collapse">
+                                                
+                                                <div class="col-lg-2 card  mb-4 col-md-3" style="margin-left:10px;">
+                                                        <div class="panel panel-primary">
+                                                            <div class="panel-heading">
+                                                                <div class="row">
+                                                                    <div class="col-xs-3">
+                                                                        <i class="fa fa-money "></i>
+                                                                    </div>
+                                                                    <div class="col-xs-9 text-right">
+                                                                        <div class="huge">26</div>
+                                                                        <div>Sales</div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <a href="#">
+                                                                <div class="panel-footer">
+                                                                    <span class="pull-left">View Details</span>
+                                                                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                                                    <div class="clearfix"></div>
+                                                                </div>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-2 card  mb-4 col-md-3" >
+                                                            <div class="panel panel-success">
+                                                                <div class="panel-heading">
+                                                                    <div class="row">
+                                                                        <div class="col-xs-3">
+                                                                            <i class="fa fa-tasks "></i>
+                                                                        </div>
+                                                                        <div class="col-xs-9 text-right">
+                                                                            <div class="huge">12</div>
+                                                                            <div>Purchases</div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <a href="#">
+                                                                    <div class="panel-footer">
+                                                                        <span class="pull-left">View Details</span>
+                                                                        <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                                                        <div class="clearfix"></div>
+                                                                    </div>
+                                                                </a>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-2 card  mb-4 col-md-3" >
+                                                                <div class="panel panel-info">
+                                                                    <div class="panel-heading">
+                                                                        <div class="row">
+                                                                            <div class="col-xs-3">
+                                                                                <i class="fa fa-tasks "></i>
+                                                                            </div>
+                                                                            <div class="col-xs-9 text-right">
+                                                                                <div class="huge">12</div>
+                                                                                <div>Purchases</div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <a href="#">
+                                                                        <div class="panel-footer">
+                                                                            <span class="pull-left">View Details</span>
+                                                                            <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                                                            <div class="clearfix"></div>
+                                                                        </div>
+                                                                    </a>
+                                                                </div>
+                                                            </div><div class="col-lg-2 card  mb-4 col-md-3" >
+                                                                    <div class="panel panel-danger">
+                                                                        <div class="panel-heading">
+                                                                            <div class="row">
+                                                                                <div class="col-xs-3">
+                                                                                    <i class="fa fa-tasks "></i>
+                                                                                </div>
+                                                                                <div class="col-xs-9 text-right">
+                                                                                    <div class="huge">12</div>
+                                                                                    <div>Purchases</div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <a href="#">
+                                                                            <div class="panel-footer">
+                                                                                <span class="pull-left">View Details</span>
+                                                                                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                                                                <div class="clearfix"></div>
+                                                                            </div>
+                                                                        </a>
+                                                                    </div>
+                                                                </div>
+                                                    <div class="col-lg-2 card  mb-4 col-md-3" >
+                                                        <div class="panel panel-warning">
+                                                            <div class="panel-heading">
+                                                                <div class="row">
+                                                                    <div class="col-xs-3">
+                                                                        <i class="fa fa-shopping-money"></i>
+                                                                    </div>
+                                                                    <div class="col-xs-9 text-right">
+                                                                        <div class="huge">124</div>
+                                                                        <div>New Orders!</div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <a href="#">
+                                                                <div class="panel-footer">
+                                                                    <span class="pull-left">View Details</span>
+                                                                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                                                    <div class="clearfix"></div>
+                                                                </div>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+
+                                        </div>
+                                    </div>
+                        </div>
+                        <div class="col-md-12">
+                                
+                </div>
+        </div>
+        <div class="col-md-1 "></div>
+</div>
+
+{% endblock %}

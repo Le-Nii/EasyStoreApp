@@ -1,0 +1,57 @@
+{% extends "base_generic.html" %}
+
+
+{% block content %}
+       
+        <div class="container">
+            <div class="row text-center">
+                <div class="col-12">
+                    <h1>{{ company }}</h1>
+                </div>
+            </div>
+            <div class="row text-center">
+                <div class="col-12">
+                    <h2 class="small">{{ order.last_change }}</h2>
+                </div>
+            </div>
+            {% if not print %}
+            <div class="row">
+                <div class="col-12">
+                    <p>
+                        <button type="button" class="btn btn-primary no-print" onclick="window.print();">Print</button>
+                        
+                    </p>
+                </div>
+            </div>
+            {% endif %}
+            <div class="row">
+                <div class="col-12">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Name</th>
+                                <th scope="col">Price</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% if list %}
+                            {% for product in list %}
+                            <tr>
+                                <td>{{ product.name }}</td>
+                                <td>{{ currency }}{{ product.price }}</td>
+                            </tr>
+                            {% endfor %}
+                            {% endif %}
+                            <tr>
+                                <th>Total</th>
+                                <td>{{ currency }}{{ order.total_price }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <script>
+         window.onload = window.print;
+        </script>
+ {% endblock %}
