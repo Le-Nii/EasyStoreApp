@@ -15,9 +15,7 @@
         <link rel="stylesheet" href="{% static 'store/css/bootstrap-theme.min.css' %}">
         <script src="{% static 'store/js/jquery-3.2.1.min.js' %}"></script>
         <script src="{% static 'store/js/bootstrap.bundle.min.js' %}"></script>
-        <link rel="apple-touch-icon" sizes="57x57" href="{% static 'store/img/apple-touch-icon-57x57.png' %}">
-        <link rel="icon" type="image/png" sizes="32x32" href="{% static "store/img/favicon.ico" %}" >
-        <link rel="mask-icon" href="{% static "store/img/safari-pinned-tab.svg" color="#5bbad5" %}">
+        <link rel="icon" type="image/png" sizes="32x32" href="{% static 'store/img/favicon.ico' %}" >
         <meta name="msapplication-TileColor" content="#da532c">
         
         <meta name="theme-color" content="#ffffff">
@@ -45,8 +43,11 @@ body,h1,h2,h3,h4,h5,h6 {font-family: "Lato", sans-serif}
     <a href="#" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" onclick="reset();">Clear Order</a>
     <a id="resetcashpopover" tabindex="0" class="active dropdown-toggle w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" role="button" data-toggle="popover" data-placement="bottom"  title="Reset Cash"
             style="cursor:pointer;"
-            data-content="<div class='row'><div class='col-md-12'><input type='number' value='0' name='resetcashamount' id='resetcashinput' step='0.01'></a></div></div>
-                <div class='row' style='margin-top:1em;'><div class='col-md-12'><button type='button' class='btn btn-primary' onclick='resetCash();'>Reset</button></div></div>">
+            data-content=""href="print.html"  
+            onclick="window.open('{% url 'resert' %}', 
+                                 'newwindow', 
+                                 'width=300,height=250'); 
+                      return false;">
              Reset Cash
          </a>
             <div class="w3-dropdown-hover">

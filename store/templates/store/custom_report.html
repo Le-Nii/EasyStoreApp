@@ -1,0 +1,138 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+<div style="margin-top: 3%;"></div>
+<div class=" row">
+        <div class="col-md-1"></div>
+        <div class="panel panel-primary col-md-10">
+        <div class="panel-heading text-center" ><h3>Coustom Report</h3></div>
+        <div class="panel-body" >
+            <div class="row">
+                <em>Specify min and max date to view report</em>
+                <div class="col-md-12">
+
+                        <form action="" method="POST">
+                            {%csrf_token%}
+                            {% for error in form.non_field_errors %}
+                            <div class="form-group has-errors text-danger small">
+                                    {{error}}
+                            </div>
+                            {% endfor %}
+                                <div class="form-row">
+                                  <div class="col-md-3 mb-3">
+                                    <label for="validationDefault01">Min Date</label>
+                                    
+                                    {{ form.min_date }}
+                                    {{ form.min_date.errors }}
+                                  </div>
+                                  
+                                  <div class="col-md-3 mb-3">
+                                    <label for="validationDefault02">Max Date</label>
+                                    
+                                    {{ form.max_date}}
+                                    {{ form.max_date.errors }}
+                                  </div>
+                                  <div class="col-md-4 mb-3">
+                                    <label for="validationDefaultUsername"></label>
+                                    <div class="input-group">
+                                      <div class="input-group-prepend">
+                
+                                      </div>
+                                      <button type="submit" class="btn btn-primary mb-2">Generate Report</button>
+                                    </div>
+                                  </div>
+                                </div>
+                            </form>
+
+                </div>
+            </div>
+                {% if num_orders %}
+                            <div class="row">
+                                <br>
+                                <div>
+                                        <div class="col-lg-4 card  mb-4 col-md-3" >
+                                                <div class="panel panel-primary">
+                                                    <div class="panel-heading">
+                                                        <div class="row">
+                                                            <div class="col-xs-3">
+                                                                <i class=" fa fa-shopping-cart   "></i>
+                                                            </div>
+                                                            <div class="col-xs-9 text-center">
+                                                                <div> Completed orders</div>
+                                                                <h3 class="">{{ num_orders }}</h3>
+                                                                <div> Sales</div>
+                                                                <h3 class="">{{ currency }}{{ total_sales }}</h3>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <a href="#">
+                                                        <div class="panel-footer">
+                                                            <span class="pull-left">View Details</span>
+                                                            <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                                            <div class="clearfix"></div>
+                                                        </div>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                            
+                                                <div class="col-lg-4 card  mb-4 col-md-3" >
+                                                        <div class="panel panel-info">
+                                                            <div class="panel-heading">
+                                                                <div class="row">
+                                                                    <div class="col-xs-3">
+                                                                        <i class="fa fa-tasks "></i>
+                                                                    </div>
+                                                                    <div class="col-xs-9 text-center">
+                                                                        <div>Purchases</div>
+                                                                        <h1 class="">{{ total_num_purchases }}</h1>
+                                                                        <i class="small" >Product: {{ num_purchases }} Cost:{{ currency }}{{purchases}}
+                                                                          <br>  Others: {{ num_other_purchases }}  Cost:{{ currency }}{{other_purchases}}</i>
+                                                                        <div>Total Cost</div>
+                                                                        <h3 class="">{{ currency }}{{ total_purchases_amount }}</h3>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <a href="#">
+                                                                <div class="panel-footer">
+                                                                    <span class="pull-left">View Details</span>
+                                                                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                                                    <div class="clearfix"></div>
+                                                                </div>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                    
+                                            <div class="col-lg-4 card  mb-4 col-md-3" >
+                                                <div class="panel panel-success">
+                                                    <div class="panel-heading">
+                                                        <div class="row">
+                                                            <div class="col-xs-3">
+                                                                <i class="fa fa-money"></i>
+                                                            </div>
+                                                            <div class="col-xs-9 text-center">
+                                                                <div>Profit from sales</div>
+                                                                <h2>{{ currency }}{{ profit_on_sales }}</h2>
+                                                                <div>Returns</div>
+                                                                <h3 class="">{{ currency }}{{ total_returns }}</h3>
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <a href="#">
+                                                        <div class="panel-footer">
+                                                            <span class="pull-left">View Details</span>
+                                                            <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                                            <div class="clearfix"></div>
+                                                        </div>
+                                                    </a>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-12"><p class="">{{ message1 }}</p></div>
+
+                    {% endif %}
+        </div>
+        <div class="col-md-1 "></div>
+</div>
+
+{% endblock %}

@@ -16,7 +16,9 @@ from django.views import generic
 from django.urls import reverse
 from django.urls import reverse_lazy
 import datetime
+from django.utils import timezone
 from . import helper
+from .forms import CustomReportForm
 
 def index(request):
     """
@@ -27,6 +29,18 @@ def index(request):
     return render(
         request,
         'index.html',
+        context={},
+    )
+
+def resert(request):
+    """
+    View function for resertCah page of site.
+    """
+    
+    # Render the HTML template index.html with the data in the context variable
+    return render(
+        request,
+        'store/resert.html',
         context={},
     )
 
@@ -144,14 +158,15 @@ def order_add_product(request, product_id):
     cash, current_order, _ = helper.setup_handling(request)
 
     to_add = get_object_or_404(Product, id=product_id)
+    
 
     # Make sure we can't go under 0 stock
-    if to_add.stock_applies:
-        if to_add.stock < 1:
-            return _addition_no_stock(request)
-        else:
-            to_add.stock -= 1
-            to_add.save()
+    # if to_add.stock_applies:
+    if to_add.stock < 1:
+        return _addition_no_stock(request)
+    else:
+        to_add.stock -= 1
+        to_add.save()
 
     Order_Item.objects.create(order=current_order, product=to_add,
                               price=to_add.price, name=to_add.name)
@@ -160,6 +175,13 @@ def order_add_product(request, product_id):
             to_add.price) +
         current_order.total_price) \
         .quantize(decimal.Decimal('0.01'))
+
+    # calculating profit
+    profit = decimal.Decimal(to_add.price) - decimal.Decimal(to_add.cost_price)
+    current_order.profit =(
+        profit + current_order.profit) \
+        .quantize(decimal.Decimal('0.01'))
+
     current_order.save()
 
     return addition(request)
@@ -373,6 +395,36 @@ class OtherPurchaseListView(generic.ListView):
     paginate_by = 10
 
 
+def num_ordered(num_orders):
+    num_orders = int(num_orders) - 1
+    if num_orders ==-1:
+        num_orders =0
+    return num_orders
+
+def profit(prof):
+    total_profit =0.00
+    for i in prof:
+        total_profit = total_profit + float(i)
+    return total_profit
+
+def sales(orders_sales):
+    total_sales =0.00
+    for i in orders_sales:
+        total_sales = total_sales + float(i)
+    return total_sales
+
+def purchases(purchase_cost):
+    t_purchases =0.00
+    for i in purchase_cost:
+        t_purchases = t_purchases + float(i)
+    return t_purchases
+
+def other_purchases(other_purchases_cost):
+    t_other_purchases =0.00
+    for i in other_purchases_cost :
+        t_other_purchases = t_other_purchases + float(i)
+    return t_other_purchases
+
 
 @login_required
 def report(request):
@@ -381,6 +433,7 @@ def report(request):
     # Generate counts of some of the main objects
     num_orders = Order.objects.all().count()
     orders_sales = Order.objects.values_list('total_price', flat=True).all()
+    profit_on_sales = Order.objects.values_list('profit', flat=True).all()
     num_product = Product.objects.all().count()
     num_purchases= Purchase.objects.all().count()
     purchase_cost= Purchase.objects.values_list('cost_price', flat=True).all()
@@ -388,65 +441,173 @@ def report(request):
     other_purchases_cost = OtherPurchase.objects.values_list('cost_price', flat=True).all()
     num_product_finished = Product.objects.filter(stock__exact=0).count()
     cash_register = Cash.objects.values_list('amount', flat=True).first()
+    cash_register = "{:0.2f}\n".format(cash_register)
 
 
     # Generate Report
     total_num_purchases = int(num_purchases) + int(num_other_purchases)
-    num_orders = int(num_orders) - 1
+    num_orders = num_ordered(num_orders)
 
-    t_sales =0.00
-    t_purchases =0.00
-    t_other_purchases =0.00
-    for i in orders_sales:
-        t_sales = t_sales + float(i)
-
-    for i in other_purchases_cost:
-        t_purchases = t_purchases + float(i)
-
-    for i in other_purchases_cost :
-        t_other_purchases = t_other_purchases + float(i)
+    t_sales = sales(orders_sales)
+    t_purchases = purchases(purchase_cost)
+    t_other_purchases = other_purchases(other_purchases_cost)
 
     total_purchases_amount = t_other_purchases + t_purchases
         
     total_returns = t_sales - total_purchases_amount
 
     # Daily Report
-    # today_min = datetime.datetime.combine(datetime.date.today(), datetime.time.min)
-    # today_max = datetime.datetime.combine(datetime.date.today(), datetime.time.max)
-    # daily_other_purchases_cost = OtherPurchase.objects.values_list('cost_price', flat=True).filter(timestamp__range=(today_min, today_max)) 
-    # daily_purchase_cost= Purchase.objects.values_list('cost_price', flat=True).filter(timestamp__range=(today_min, today_max)) 
-    # daily_orders_sales = Order.objects.values_list('total_price', flat=True).filter(timestamp__range=(today_min, today_max)) 
+    today_min = datetime.datetime.combine(datetime.date.today(), datetime.time.min)
+    today_max = datetime.datetime.combine(datetime.date.today(), datetime.time.max)
+    num_daily_orders = Order.objects.filter(last_change__range=(today_min, today_max)).count()
+    num_daily_purchases= Purchase.objects.filter(timestamp__range=(today_min, today_max)).count()
+    num_daily_other_purchases = OtherPurchase.objects.filter(timestamp__range=(today_min, today_max)).count()
+    daily_other_purchases_cost = OtherPurchase.objects.values_list('cost_price', flat=True).filter(timestamp__range=(today_min, today_max)) 
+    daily_purchase_cost = Purchase.objects.values_list('cost_price', flat=True).filter(timestamp__range=(today_min, today_max)) 
+    daily_orders_sales = Order.objects.values_list('total_price', flat=True).filter(last_change__range=(today_min, today_max)) 
+    daily_profit_on_sales = Order.objects.values_list('profit', flat=True).filter(last_change__range=(today_min, today_max)) 
+    
 
-    # dt_sales =0.00
-    # dt_purchases =0.00
-    # dt_other_purchases =0.00
-    # for i in daily_orders_sales:
-    #     dt_sales = dt_sales + float(i)
+    daily_total_sales = sales(daily_orders_sales)
+    daily_total_purchases = purchases(daily_purchase_cost)
+    daily_total_other_purchases = other_purchases(daily_other_purchases_cost)
 
-    # for i in daily_other_purchases_cost:
-    #     dt_purchases = dt_purchases + float(i)
-
-    # for i in daily_other_purchases_cost :
-    #     dt_other_purchases = dt_other_purchases + float(i)
-
-    # dtotal_purchases_amount = dt_other_purchases + dt_purchases
-        
-    # daily_total_returns = dt_sales - dtotal_purchases_amount
-
+    dtotal_purchases_amount = daily_total_other_purchases + daily_total_purchases        
+    daily_total_returns = daily_total_sales - dtotal_purchases_amount
+    daily_total_purchases_amount = daily_total_other_purchases + daily_total_purchases
+    num_daily_orders = num_ordered(num_daily_orders)
 
     #Weakly Report
+    year = today_min.year
+    week=today_min.isocalendar()[1]
 
+    num_weekly_orders = Order.objects.filter(last_change__week = week,last_change__year = year).count()
+    num_weekly_purchases= Purchase.objects.filter(timestamp__week = week,timestamp__year = year).count()
+    num_weekly_other_purchases = OtherPurchase.objects.filter(timestamp__week = week,timestamp__year = year).count()
+    weekly_other_purchases_cost = OtherPurchase.objects.values_list('cost_price', flat=True).filter(timestamp__week = week,timestamp__year = year)
+    weekly_purchase_cost = Purchase.objects.values_list('cost_price', flat=True).filter(timestamp__week = week,timestamp__year = year)
+    weekly_orders_sales = Order.objects.values_list('total_price', flat=True).filter(last_change__week = week,last_change__year = year)
+    weekly_profit_on_sales = Order.objects.values_list('profit', flat=True).filter(last_change__week = week,last_change__year = year)
+
+    weekly_total_sales = sales(weekly_orders_sales)
+    weekly_total_purchases = purchases(weekly_purchase_cost)
+    weekly_total_other_purchases = other_purchases(weekly_other_purchases_cost)
+
+    wtotal_purchases_amount = weekly_total_other_purchases + weekly_total_purchases        
+    weekly_total_returns = weekly_total_sales - wtotal_purchases_amount
+    weekly_total_purchases_amount = weekly_total_other_purchases + weekly_total_purchases
+    num_weekly_orders = num_ordered(num_weekly_orders)
+    
 
     #Monthly Report
+    month=today_min.month
 
+    num_monthly_orders = Order.objects.filter(last_change__month = month,last_change__year = year).count()
+    num_monthly_purchases= Purchase.objects.filter(timestamp__month = month,timestamp__year = year).count()
+    num_monthly_other_purchases = OtherPurchase.objects.filter(timestamp__month = month,timestamp__year = year).count()
+    monthly_other_purchases_cost = OtherPurchase.objects.values_list('cost_price', flat=True).filter(timestamp__month = month,timestamp__year = year)
+    monthly_purchase_cost = Purchase.objects.values_list('cost_price', flat=True).filter(timestamp__month = month,timestamp__year = year)
+    monthly_orders_sales = Order.objects.values_list('total_price', flat=True).filter(last_change__month = month,last_change__year = year)
+    monthly_profit_on_sales = Order.objects.values_list('total_price', flat=True).filter(last_change__month = month,last_change__year = year)
+
+    monthly_total_sales = sales(monthly_orders_sales)
+    monthly_total_purchases = purchases(monthly_purchase_cost)
+    monthly_total_other_purchases = other_purchases(monthly_other_purchases_cost)
+
+    mtotal_purchases_amount = monthly_total_other_purchases + monthly_total_purchases        
+    monthly_total_returns = monthly_total_sales - mtotal_purchases_amount
+    monthly_total_purchases_amount = monthly_total_other_purchases + monthly_total_purchases
+    num_monthly_orders = num_ordered(num_monthly_orders)
+
+    # profit
+    profit_on_sales = profit(profit_on_sales)
+    daily_profit_on_sales = profit(daily_profit_on_sales)
+    weekly_profit_on_sales = profit(weekly_profit_on_sales)
+    monthly_profit_on_sales = profit(monthly_profit_on_sales)
     
-    # Render the HTML template index.html with the data in the context variable.
+    
+    # Render the HTML template report.html with the data in the context variable.
     return render(
         request,
         'store/report.html',
         context={'num_orders':num_orders,'num_product':num_product,'num_purchases':num_purchases,
         'num_product_finished':num_product_finished,'cash_register':cash_register, 'total_returns':total_returns,
         'currency':currency, 't_sales':t_sales, 't_purchases':t_purchases, 't_other_purchases':t_other_purchases,
-        'total_purchases_amount':total_purchases_amount, 'total_purchases_amount':total_purchases_amount,
-        'num_other_purchases':num_other_purchases,'total_num_purchases':total_num_purchases,'t_sales':t_sales,},
+        'total_purchases_amount':total_purchases_amount, 'dtotal_purchases_amount':dtotal_purchases_amount,
+        'num_other_purchases':num_other_purchases,'total_num_purchases':total_num_purchases,'t_sales':t_sales,
+        'daily_total_sales':daily_total_sales, 'daily_total_purchases':daily_total_purchases, 
+        'daily_total_other_purchases':daily_total_other_purchases,
+        'daily_total_returns':daily_total_returns,'num_daily_orders':num_daily_orders, 'num_daily_purchases':num_daily_purchases, 
+        'num_daily_other_purchases':num_daily_other_purchases, 'daily_total_purchases_amount':daily_total_purchases_amount,
+        'weekly_total_sales':weekly_total_sales, 'weekly_total_purchases':weekly_total_purchases, 
+        'weekly_total_other_purchases':weekly_total_other_purchases,
+        'weekly_total_returns':weekly_total_returns,'num_weekly_orders':num_weekly_orders, 'num_weekly_purchases':num_weekly_purchases, 
+        'num_weekly_other_purchases':num_weekly_other_purchases, 'weekly_total_purchases_amount':weekly_total_purchases_amount,
+        'wtotal_purchases_amount':wtotal_purchases_amount,
+        'monthly_total_sales':monthly_total_sales, 'monthly_total_sales':monthly_total_sales, 'monthly_total_purchases':monthly_total_purchases, 
+        'monthly_total_other_purchases':monthly_total_other_purchases,
+        'monthly_total_returns':monthly_total_returns,'num_monthly_orders':num_monthly_orders, 'num_monthly_purchases':num_monthly_purchases, 
+        'num_monthly_other_purchases':num_monthly_other_purchases, 'monthly_total_purchases_amount':monthly_total_purchases_amount,
+        'mtotal_purchases_amount':mtotal_purchases_amount, 'profit_on_sales':profit_on_sales, 'daily_profit_on_sales':daily_profit_on_sales,
+        'weekly_profit_on_sales':weekly_profit_on_sales, 'monthly_profit_on_sales':monthly_profit_on_sales,
+        },
     ) # num_visits appended
+
+def custom_report(request):
+    """
+    View function for Custom Report
+    """
+
+    # If this is a POST request then process the Form data
+    if request.method == 'POST':
+
+        # Create a form instance and populate it with data from the request (binding):
+        form = CustomReportForm(request.POST)
+
+        # Check if the form is valid:
+        if form.is_valid():
+            # process the data in form.cleaned_data
+            min_date = form.cleaned_data['min_date']
+            max_date = form.cleaned_data['max_date']
+
+            today_min = datetime.datetime.combine(min_date, datetime.time.min)
+            today_max = datetime.datetime.combine(max_date, datetime.time.max)
+
+            num_orders = Order.objects.filter(last_change__range=(today_min, today_max)).count()
+            num_purchases= Purchase.objects.filter(timestamp__range=(today_min, today_max)).count()
+            num_other_purchases = OtherPurchase.objects.filter(timestamp__range=(today_min, today_max)).count()
+            other_purchases_cost = OtherPurchase.objects.values_list('cost_price', flat=True).filter(timestamp__range=(today_min, today_max)) 
+            purchase_cost = Purchase.objects.values_list('cost_price', flat=True).filter(timestamp__range=(today_min, today_max)) 
+            orders_sales = Order.objects.values_list('total_price', flat=True).filter(last_change__range=(today_min, today_max))
+            profit_on_sales = Order.objects.values_list('profit', flat=True).filter(last_change__range=(today_min, today_max))
+
+            total_sales = sales(orders_sales)
+            total_purchases = purchases(purchase_cost)
+            total_other_purchases = other_purchases(other_purchases_cost)
+
+            total_purchases_amount = total_other_purchases + total_purchases        
+            total_returns = total_sales - total_purchases_amount
+            total_purchases_amount = total_other_purchases + total_purchases
+            num_orders = num_ordered(num_orders)
+
+            profit_on_sales = profit(profit_on_sales)
+
+            message1 = "Report between {0} and {1}".format(max_date, min_date)
+
+            return render(
+            request, 'store/custom_report.html',
+            context={
+                'total_sales':total_sales, 'total_purchases':total_purchases, 
+                'total_other_purchases':total_other_purchases,
+                'total_returns':total_returns,'num_orders':num_orders, 'num_purchases':num_purchases, 
+                'num_other_purchases':num_other_purchases, 'total_purchases_amount':total_purchases_amount,
+                'total_purchases_amount':total_purchases_amount, 'message1':message1, 'profit_on_sales':profit_on_sales,
+            })
+
+    # If this is a GET (or any other method) create the default form.
+    else:
+        initial_min = datetime.date.today() - datetime.timedelta(weeks=4)
+        initial_max = datetime.date.today()
+        form = CustomReportForm(initial={'min_date':initial_min, 'max_date': initial_max})
+
+    return render(request, 'store/custom_report.html', {'form': form})

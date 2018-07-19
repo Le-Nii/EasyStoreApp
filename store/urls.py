@@ -5,6 +5,7 @@ from django.urls import path
 
 urlpatterns = [
     path('', views.index, name='index'),
+    path('resert/', views.resert, name='resert'),
     path('addition/', views.addition, name='addition'),
     path('order/reset/', views.reset_order, name='reset_order'),
     path('order/', views.order, name='order'),
@@ -25,6 +26,7 @@ urlpatterns = [
     path('product/create/', views.ProductCreate.as_view(), name='product_create'),
     path('product/<int:pk>/update/', views.ProductUpdate.as_view(), name='product_update'),
     path('report/', views.report, name='report'),
+    path('customreport/', views.custom_report, name='custom_report'),
 ]
 
 urlpatterns += [

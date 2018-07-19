@@ -1,0 +1,46 @@
+<html>
+    <head>
+            <title>ResertCash</title>
+            {% load static %}
+        
+            <link rel="stylesheet" href="{% static 'store/css/bootstrap.min.css' %}">
+            <link rel="stylesheet" href="{% static 'store/css/bootstrap-theme.min.css' %}">
+            <script src="{% static 'store/js/jquery-3.2.1.min.js' %}"></script>
+            <script src="{% static 'store/js/bootstrap.bundle.min.js' %}"></script>
+            <link rel="icon" type="image/png" sizes="32x32" href="{% static 'store/img/favicon.ico' %}" >
+    </head>
+    <body>
+            <div class="panel panel-primary">
+                <div class="panel-heading">Resert Cash in Register</div>
+                <div class="panel-body">
+                    <div class='row'>
+                        <div class='col-md-12'>
+                            <input class="form-control" type='number' value='0' name='resetcashamount' id='resetcashinput' step='0.01'>
+                        </div>
+                    </div>
+                    <div class='row' style='margin-top:1em;'>
+                        <div class='col-md-12'>
+                            <button type='button' class='btn btn-primary' onclick='resetCash();'>Reset</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>       
+            <script>
+                function resetCash() {
+                    var req = new XMLHttpRequest();
+                    req.open('GET', "{% url 'cash' '' %}" + encodeURIComponent($("#resetcashinput").val()), false);
+                    req.send(null)
+                    console.log('trying to reset cash');
+
+                    if (req.status == 200) {
+                        $('#cashresetamount').text(encodeURIComponent($("#resetcashinput").val()));
+                        $('#cashresetdiv').show()
+                        $('#resetcashpopover').popover('hide');   
+                    }
+                    window.close();
+                    // alert('succesfully reset cash register');
+                }
+            </script>
+    </body>
+</html>

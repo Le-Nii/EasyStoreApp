@@ -3,13 +3,13 @@
 {% block content %}
 <div style="margin-top: 3%;"></div>
 <div class=" row">
-        <div class="col-md-2"></div>
-        <div class="panel panel-primary col-md-9">
+        <div class="col-md-1"></div>
+        <div class="panel panel-primary col-md-10">
         <div class="panel-heading text-center" ><h3>Report</h3></div>
         <div class="panel-body" >
                             <div class="row">
                                 <div>
-                                        <div class="col-lg-6 card  mb-4 col-md-3" >
+                                        <div class="col-lg-4 card  mb-4 col-md-3" >
                                                 <div class="panel panel-warning">
                                                     <div class="panel-heading">
                                                         <div class="row">
@@ -31,7 +31,7 @@
                                                     </a>
                                                 </div>
                                             </div>
-                                            <div class="col-lg-6 card  mb-4 col-md-3" >
+                                            <div class="col-lg-4 card  mb-4 col-md-3" >
                                                 <div class="panel panel-danger">
                                                     <div class="panel-heading">
                                                         <div class="row">
@@ -53,6 +53,30 @@
                                                     </a>
                                                 </div>
                                             </div>
+                                            <div class="col-lg-4 card  mb-4 col-md-3" >
+                                                    <div class="panel panel-success">
+                                                        <div class="panel-heading">
+                                                            <div class="row">
+                                                                <div class="col-xs-3">
+                                                                    <i class="fa fa-money"></i>
+                                                                </div>
+                                                                <div class="col-xs-9 text-center">
+                                                                    
+                                                                    <div>Cash in Register</div>
+                                                                    <h2>{{ currency }}{{ cash_register }}</h2>
+                                                                    
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <a href="#">
+                                                            <div class="panel-footer">
+                                                                <span class="pull-left">View Details</span>
+                                                                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                                                <div class="clearfix"></div>
+                                                            </div>
+                                                        </a>
+                                                    </div>
+                                                </div>
                                 </div>
                                 <div class="col-md-12">
                                         <button class=" lead btn btn-lg btn-primary btn-block" data-toggle="collapse" data-target="#general">General Report</button>
@@ -67,7 +91,7 @@
                                                                 <i class=" fa fa-shopping-cart   "></i>
                                                             </div>
                                                             <div class="col-xs-9 text-center">
-                                                                <div>Complete orders</div>
+                                                                <div>Total orders</div>
                                                                 <h3 class="">{{ num_orders }}</h3>
                                                                 <div>Total Sales</div>
                                                                 <h3 class="">{{ currency }}{{ t_sales }}</h3>
@@ -119,11 +143,11 @@
                                                                 <i class="fa fa-money"></i>
                                                             </div>
                                                             <div class="col-xs-9 text-center">
-                                                                
+                                                                <div>Profit from Sales</div>
+                                                                <h2 class="">{{ currency }}{{ profit_on_sales }}</h2>
                                                                 <div>Cash in Register</div>
                                                                 <h3>{{ currency }}{{ cash_register }}</h3>
-                                                                <div>Total Returns</div>
-                                                                <h3 class="">{{ currency }}{{ total_returns }}</h3>
+                                                                
                                                             </div>
                                                         </div>
                                                     </div>
@@ -145,16 +169,45 @@
                                         <br>
                                         <div id="daily" class="collapse">
                                                 
-                                                <div class="col-lg-2 card  mb-4 col-md-3" style="margin-left:10px;">
-                                                        <div class="panel panel-primary">
+                                            <div class="col-lg-4 card  mb-4 col-md-3" >
+                                                <div class="panel panel-primary">
+                                                    <div class="panel-heading">
+                                                        <div class="row">
+                                                            <div class="col-xs-3">
+                                                                <i class=" fa fa-shopping-cart   "></i>
+                                                            </div>
+                                                            <div class="col-xs-9 text-center">
+                                                                <div>Orders</div>
+                                                                <h3 class="">{{ num_daily_orders }}</h3>
+                                                                <div>Returns</div>
+                                                                <h3 class="">{{ currency }}{{ total_returns }}</h3>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <a href="#">
+                                                        <div class="panel-footer">
+                                                            <span class="pull-left">View Details</span>
+                                                            <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                                            <div class="clearfix"></div>
+                                                        </div>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                            
+                                                <div class="col-lg-4 card  mb-4 col-md-3" >
+                                                        <div class="panel panel-info">
                                                             <div class="panel-heading">
                                                                 <div class="row">
                                                                     <div class="col-xs-3">
-                                                                        <i class="fa fa-money "></i>
+                                                                        <i class="fa fa-tasks "></i>
                                                                     </div>
-                                                                    <div class="col-xs-9 text-right">
-                                                                        <div class="huge">26</div>
-                                                                        <div>Sales</div>
+                                                                    <div class="col-xs-9 text-center">
+                                                                        <div>Purchases</div>
+                                                                        <h1 class="">{{ dtotal_num_purchases }}</h1>
+                                                                        <i class="small" >Product: {{ num_daily_purchases }} Cost:{{ currency }}{{daily_total_purchases}}
+                                                                          <br>  Others: {{ num_daily_other_purchases }}  Cost:{{ currency }}{{daily_total_other_purchases}}</i>
+                                                                        <div>Total Cost</div>
+                                                                        <h3 class="">{{ currency }}{{ daily_total_purchases_amount }}</h3>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -167,16 +220,78 @@
                                                             </a>
                                                         </div>
                                                     </div>
-                                                    <div class="col-lg-2 card  mb-4 col-md-3" >
-                                                            <div class="panel panel-success">
+                                                    
+                                            <div class="col-lg-4 card  mb-4 col-md-3" >
+                                                <div class="panel panel-success">
+                                                    <div class="panel-heading">
+                                                        <div class="row">
+                                                            <div class="col-xs-3">
+                                                                <i class="fa fa-money"></i>
+                                                            </div>
+                                                            <div class="col-xs-9 text-center">
+                                                                <div>Profit from Sales</div>
+                                                                <h2 class="">{{ currency }}{{ daily_profit_on_sales }}</h2>
+                                                                <div>Returns</div>
+                                                                <h3 class="">{{ currency }}{{ daily_total_returns }}</h3>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <a href="#">
+                                                        <div class="panel-footer">
+                                                            <span class="pull-left">View Details</span>
+                                                            <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                                            <div class="clearfix"></div>
+                                                        </div>
+                                                    </a>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                            <button class=" lead btn btn-lg btn-primary btn-block" data-toggle="collapse" data-target="#weekly">Weekly Report</button>
+                                            <br>
+                                            <div id="weekly" class="collapse">
+                                                    
+                                                <div class="col-lg-4 card  mb-4 col-md-3" >
+                                                    <div class="panel panel-primary">
+                                                        <div class="panel-heading">
+                                                            <div class="row">
+                                                                <div class="col-xs-3">
+                                                                    <i class=" fa fa-shopping-cart   "></i>
+                                                                </div>
+                                                                <div class="col-xs-9 text-center">
+                                                                    <div>orders for this week</div>
+                                                                    <h3 class="">{{ num_weekly_orders }}</h3>
+                                                                    <div> Sales</div>
+                                                                    <h3 class="">{{ currency }}{{ weekly_total_sales }}</h3>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <a href="#">
+                                                            <div class="panel-footer">
+                                                                <span class="pull-left">View Details</span>
+                                                                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                                                <div class="clearfix"></div>
+                                                            </div>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                                
+                                                    <div class="col-lg-4 card  mb-4 col-md-3" >
+                                                            <div class="panel panel-info">
                                                                 <div class="panel-heading">
                                                                     <div class="row">
                                                                         <div class="col-xs-3">
                                                                             <i class="fa fa-tasks "></i>
                                                                         </div>
-                                                                        <div class="col-xs-9 text-right">
-                                                                            <div class="huge">12</div>
+                                                                        <div class="col-xs-9 text-center">
                                                                             <div>Purchases</div>
+                                                                            <h1 class="">{{ wtotal_num_purchases }}</h1>
+                                                                            <i class="small" >Product: {{ num_weekly_purchases }} Cost:{{ currency }}{{weekly_purchases}}
+                                                                              <br>  Others: {{ num_weekly_other_purchases }}  Cost:{{ currency }}{{weekly_other_purchases}}</i>
+                                                                            <div>Total Cost</div>
+                                                                            <h3 class="">{{ currency }}{{ weekly_total_purchases_amount }}</h3>
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -189,74 +304,125 @@
                                                                 </a>
                                                             </div>
                                                         </div>
-                                                        <div class="col-lg-2 card  mb-4 col-md-3" >
-                                                                <div class="panel panel-info">
-                                                                    <div class="panel-heading">
-                                                                        <div class="row">
-                                                                            <div class="col-xs-3">
-                                                                                <i class="fa fa-tasks "></i>
-                                                                            </div>
-                                                                            <div class="col-xs-9 text-right">
-                                                                                <div class="huge">12</div>
-                                                                                <div>Purchases</div>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                    <a href="#">
-                                                                        <div class="panel-footer">
-                                                                            <span class="pull-left">View Details</span>
-                                                                            <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                                                                            <div class="clearfix"></div>
-                                                                        </div>
-                                                                    </a>
+                                                        
+                                                <div class="col-lg-4 card  mb-4 col-md-3" >
+                                                    <div class="panel panel-success">
+                                                        <div class="panel-heading">
+                                                            <div class="row">
+                                                                <div class="col-xs-3">
+                                                                    <i class="fa fa-money"></i>
                                                                 </div>
-                                                            </div><div class="col-lg-2 card  mb-4 col-md-3" >
-                                                                    <div class="panel panel-danger">
-                                                                        <div class="panel-heading">
-                                                                            <div class="row">
-                                                                                <div class="col-xs-3">
-                                                                                    <i class="fa fa-tasks "></i>
-                                                                                </div>
-                                                                                <div class="col-xs-9 text-right">
-                                                                                    <div class="huge">12</div>
-                                                                                    <div>Purchases</div>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                        <a href="#">
-                                                                            <div class="panel-footer">
-                                                                                <span class="pull-left">View Details</span>
-                                                                                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                                                                                <div class="clearfix"></div>
-                                                                            </div>
-                                                                        </a>
-                                                                    </div>
-                                                                </div>
-                                                    <div class="col-lg-2 card  mb-4 col-md-3" >
-                                                        <div class="panel panel-warning">
-                                                            <div class="panel-heading">
-                                                                <div class="row">
-                                                                    <div class="col-xs-3">
-                                                                        <i class="fa fa-shopping-money"></i>
-                                                                    </div>
-                                                                    <div class="col-xs-9 text-right">
-                                                                        <div class="huge">124</div>
-                                                                        <div>New Orders!</div>
-                                                                    </div>
+                                                                <div class="col-xs-9 text-center">
+                                                                    <div>Profit from Sales</div>
+                                                                    <h2 class="">{{ currency }}{{ weekly_profit_on_sales }}</h2>
+                                                                    <div>Returns</div>
+                                                                <h3 class="">{{ currency }}{{ weekly_total_returns }}</h3>
                                                                 </div>
                                                             </div>
-                                                            <a href="#">
-                                                                <div class="panel-footer">
-                                                                    <span class="pull-left">View Details</span>
-                                                                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                                                                    <div class="clearfix"></div>
-                                                                </div>
-                                                            </a>
                                                         </div>
+                                                        <a href="#">
+                                                            <div class="panel-footer">
+                                                                <span class="pull-left">View Details</span>
+                                                                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                                                <div class="clearfix"></div>
+                                                            </div>
+                                                        </a>
                                                     </div>
-
+                                                </div>
+    
+                                            </div>  
+    
+                                                
+    
+                                            <button class="btn btn-lg btn-primary btn-block" data-toggle="collapse" data-target="#monthly">Monthly Report</button>
+                                            <br>
+                                            <div id="monthly" class="collapse">
+                                                    
+                                                <div class="col-lg-4 card  mb-4 col-md-3" >
+                                                    <div class="panel panel-primary">
+                                                        <div class="panel-heading">
+                                                            <div class="row">
+                                                                <div class="col-xs-3">
+                                                                    <i class=" fa fa-shopping-cart   "></i>
+                                                                </div>
+                                                                <div class="col-xs-9 text-center">
+                                                                    <div>Orders</div>
+                                                                    <h3 class="">{{ num_monthly_orders }}</h3>
+                                                                    <div>Sales</div>
+                                                                    <h3 class="">{{ currency }}{{ monthly_total_sales }}</h3>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <a href="#">
+                                                            <div class="panel-footer">
+                                                                <span class="pull-left">View Details</span>
+                                                                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                                                <div class="clearfix"></div>
+                                                            </div>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                                
+                                                    <div class="col-lg-4 card  mb-4 col-md-3" >
+                                                            <div class="panel panel-info">
+                                                                <div class="panel-heading">
+                                                                    <div class="row">
+                                                                        <div class="col-xs-3">
+                                                                            <i class="fa fa-tasks "></i>
+                                                                        </div>
+                                                                        <div class="col-xs-9 text-center">
+                                                                            <div>Purchases</div>
+                                                                            <h1 class="">{{ mtotal_num_purchases }}</h1>
+                                                                            <i class="small" >Product: {{ num_monthly_purchases }} Cost:{{ currency }}{{monthly_total_purchases}}
+                                                                              <br>  Others: {{ num_monthly_other_purchases }}  Cost:{{ currency }}{{monthly_total_other_purchases}}</i>
+                                                                            <div>Total Cost</div>
+                                                                            <h3 class="">{{ currency }}{{ monthly_total_purchases_amount }}</h3>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <a href="#">
+                                                                    <div class="panel-footer">
+                                                                        <span class="pull-left">View Details</span>
+                                                                        <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                                                        <div class="clearfix"></div>
+                                                                    </div>
+                                                                </a>
+                                                            </div>
+                                                        </div>
+                                                        
+                                                <div class="col-lg-4 card  mb-4 col-md-3" >
+                                                    <div class="panel panel-success">
+                                                        <div class="panel-heading">
+                                                            <div class="row">
+                                                                <div class="col-xs-3">
+                                                                    <i class="fa fa-money"></i>
+                                                                </div>
+                                                                <div class="col-xs-9 text-center">
+                                                                    <div>Profit from Sales</div>
+                                                                    <h2 class="">{{ currency }}{{ monthly_profit_on_sales }}</h2>
+                                                                    <div>Returns</div>
+                                                                <h3 class="">{{ currency }}{{ monthly_total_returns }}</h3>
+                                                                    
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <a href="#">
+                                                            <div class="panel-footer">
+                                                                <span class="pull-left">View Details</span>
+                                                                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                                                <div class="clearfix"></div>
+                                                            </div>
+                                                        </a>
+                                                    </div>
+                                                </div>
+    
+                                            </div>
                                         </div>
-                                    </div>
+
+                                       <div class="col-md-12">
+                                            <a href="{% url 'custom_report' %}" class="btn btn-lg btn-primary btn-block">Custom Date Report</a>
+                                       </div>
+                        </div>
                         </div>
                         <div class="col-md-12">
                                 
