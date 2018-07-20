@@ -193,9 +193,9 @@ def order_remove_product(request, product_id):
     order_item = get_object_or_404(Order_Item, id=product_id)
     order_product = order_item.product
 
-    if order_product.stock_applies:
-        order_product.stock += 1
-        order_product.save()
+    # if order_product.stock_applies:
+    order_product.stock += 1
+    order_product.save()
 
     current_order.total_price = (
         current_order.total_price -
@@ -405,7 +405,7 @@ def profit(prof):
     total_profit =0.00
     for i in prof:
         total_profit = total_profit + float(i)
-    return total_profit
+    return "{:0.2f}\n".format(total_profit)
 
 def sales(orders_sales):
     total_sales =0.00
@@ -508,7 +508,7 @@ def report(request):
     monthly_other_purchases_cost = OtherPurchase.objects.values_list('cost_price', flat=True).filter(timestamp__month = month,timestamp__year = year)
     monthly_purchase_cost = Purchase.objects.values_list('cost_price', flat=True).filter(timestamp__month = month,timestamp__year = year)
     monthly_orders_sales = Order.objects.values_list('total_price', flat=True).filter(last_change__month = month,last_change__year = year)
-    monthly_profit_on_sales = Order.objects.values_list('total_price', flat=True).filter(last_change__month = month,last_change__year = year)
+    monthly_profit_on_sales = Order.objects.values_list('profit', flat=True).filter(last_change__month = month,last_change__year = year)
 
     monthly_total_sales = sales(monthly_orders_sales)
     monthly_total_purchases = purchases(monthly_purchase_cost)
